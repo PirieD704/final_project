@@ -11,3 +11,5 @@ this will render the route properly
 angular requirements
 must have routeProvider set up.
 have default views and route to second view.
+
+do not include node_modules in .gitignore file until we merge to master
