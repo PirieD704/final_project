@@ -52,3 +52,13 @@ function create() {
 
 function update() {
 }
+
+/*
+
+
+The order in which items are rendered in the display matches the order in which you create them. 
+So if you wish to place a background behind the star sprite you would need to ensure that it was 
+added as a sprite first, before the star.
+
+
+*/
