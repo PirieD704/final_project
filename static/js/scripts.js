@@ -49,7 +49,7 @@ function preload() {
 	game.load.image('background', '/static/images/background.png');
 	game.load.image('particle', '/static/images/green_particle.png')
     game.load.image('player', '/static/images/player_1.png');
-    game.load.image('shield', '/static/images/line2.png');
+    game.load.image('shield', '/static/images/line4.png');
 
 }
 
@@ -74,7 +74,7 @@ function create() {
     // weapon.bulletWorldWrap = true;
     sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
-    sprite.scale.setTo(0.3, 0.3);
+    sprite.scale.setTo(0.35, 0.35);
     circleObj = new Phaser.Circle(game.world.centerX, 100,64);
     circle = game.add.sprite(game.world.centerX, game.world.centerY, circle);
 
