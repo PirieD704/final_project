@@ -1,0 +1,92 @@
+{
+  "name": "phaser",
+  "version": "2.6.2",
+  "release": "Kore Springs",
+  "description": "A fast, free and fun HTML5 Game Framework for Desktop and Mobile web browsers.",
+  "author": {
+    "name": "Richard Davey",
+    "email": "rdavey@gmail.com",
+    "url": "http://www.photonstorm.com"
+  },
+  "logo": "https://raw.github.com/photonstorm/phaser/master/phaser-logo-small.png",
+  "homepage": "http://phaser.io",
+  "bugs": {
+    "url": "https://github.com/photonstorm/phaser/issues"
+  },
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "main": "./build/phaser.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://photonstorm@github.com/photonstorm/phaser.git"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test grunt jshint"
+  },
+  "keywords": [
+    "2d",
+    "HTML5",
+    "WebGL",
+    "canvas",
+    "game",
+    "javascript",
+    "physics",
+    "tweens",
+    "typescript",
+    "web audio"
+  ],
+  "devDependencies": {
+    "eslint": "^3.3.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-connect": "^0.7.1",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-git": "^0.3.3",
+    "grunt-jsdoc": "~0.6.2-beta",
+    "grunt-notify": "^0.3.0",
+    "grunt-text-replace": "^0.3.11",
+    "jsdoc": "^3.4.0",
+    "load-grunt-config": "~0.7.2",
+    "typescript": "1.4.1",
+    "yuidocjs": "^0.3.50"
+  },
+  "typings": "./typescript/typings.json",
+  "typescript": {
+    "definitions": [
+      "typescript/p2.d.ts",
+      "typescript/phaser.comments.d.ts",
+      "typescript/pixi.comments.d.ts"
+    ]
+  },
+  "gitHead": "dd39f9ab08d57fa1bacd1287ccadb03fb3151267",
+  "_id": "phaser@2.6.2",
+  "_shasum": "eb39121725a2149c49f46b5d144318c22bc09249",
+  "_from": "phaser@latest",
+  "_npmVersion": "3.6.0",
+  "_nodeVersion": "5.6.0",
+  "_npmUser": {
+    "name": "photonstorm",
+    "email": "rdavey@gmail.com"
+  },
+  "dist": {
+    "shasum": "eb39121725a2149c49f46b5d144318c22bc09249",
+    "tarball": "https://registry.npmjs.org/phaser/-/phaser-2.6.2.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "photonstorm",
+      "email": "rdavey@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/phaser-2.6.2.tgz_1472171960524_0.1596319682430476"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/phaser/-/phaser-2.6.2.tgz",
+  "readme": "ERROR: No README data found!"
+}
