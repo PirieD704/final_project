@@ -49,7 +49,7 @@ function preload() {
 	game.load.image('background', '/static/images/background.png');
 	game.load.image('particle', '/static/images/green_particle.png')
     game.load.image('player', '/static/images/player_1.png');
-    game.load.image('shield', '/static/images/line4.png');
+    game.load.image('shield', '/static/images/shield_final_project.png');
 
 }
 
