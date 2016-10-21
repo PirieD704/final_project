@@ -74,7 +74,7 @@ function create() {
     // weapon.bulletWorldWrap = true;
     sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
-    sprite.scale.setTo(0.5, 0.5);
+    sprite.scale.setTo(0.3, 0.3);
     circleObj = new Phaser.Circle(game.world.centerX, 100,64);
     circle = game.add.sprite(game.world.centerX, game.world.centerY, circle);
 
