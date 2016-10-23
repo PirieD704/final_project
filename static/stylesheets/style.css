@@ -9,5 +9,8 @@ a {
 }
 
 canvas {
+	text-align: center;
 	background-color: #999999;
+	margin: auto;
+	margin-top: 10%;
 }
