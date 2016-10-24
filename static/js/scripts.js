@@ -4,23 +4,6 @@
 * ---------
 */	
 
-// // create the canvas tag with JS
-// var canvas = document.createElement('canvas');
-// // create a context for JS to play inside of
-// var context = canvas.getContext('2d');
-// // give canvas some substance
-// canvas.width = 512;
-// canvas.height = 480;
-// // console.dir(canvas)
-// // Put the canvas in the DOM
-// document.body.appendChild(canvas);
-
-// function draw(){
-// 	requestAnimationFrame(draw);
-// }
-
-// draw();
-
 /*
 from - http://phaser.io/tutorials/making-your-first-phaser-game
 The first two parameters are the width and the height of the canvas element
@@ -47,8 +30,10 @@ var circle, sprite, weapon, cursors, fireButton;
 function preload() {
 
 	game.load.image('background', '/static/images/background.png');
-	game.load.image('particle', '/static/images/green_particle.png')
+	game.load.image('particle', '/static/images/green_particle.png');
+    game.load.image('flare', '/static/images/flare.png');
     game.load.image('player', '/static/images/player_1.png');
+    game.load.image('flag', '/static/images/unclaimed_flag.png');
     game.load.image('shield', '/static/images/shield_final_project.png');
 
 }
@@ -58,42 +43,55 @@ function create() {
 	game.add.tileSprite(0, 0, 1920, 1920, 'background');
     //  Creates 30 bullets, using the 'bullet' graphic
     weapon = game.add.weapon(30, 'particle');
+    weapon2 = game.add.weapon(1, 'flare');
+    // weapon2.scale.setTo(0.35, 0.35);
 
 
     //  The bullets will be automatically killed when they are 2000ms old
     weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     weapon.bulletLifespan = 2000;
+    weapon2.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    weapon2.bulletLifespan = 1200;
 
     //  The speed at which the bullet is fired
-    weapon.bulletSpeed = 600;
+    weapon.bulletSpeed = 700;
+    weapon2.bulletSpeed = 300;
 
     //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-    weapon.fireRate = 100;
+    weapon.fireRate = 300;
+    weapon2.fireRate = 300;
 
     //  Wrap bullets around the world bounds to the opposite side
     // weapon.bulletWorldWrap = true;
     sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
+    // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
+    flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
+    flag.scale.setTo(0.35, 0.35);
     sprite.scale.setTo(0.35, 0.35);
-    circleObj = new Phaser.Circle(game.world.centerX, 100,64);
-    circle = game.add.sprite(game.world.centerX, game.world.centerY, circle);
 
     sprite.anchor.set(0.5);
+    shield.anchor.set(0.5);
 
     game.physics.arcade.enable(sprite);
-    game.physics.arcade.enable(circle);
+    game.physics.arcade.enable(shield);
 
     sprite.body.drag.set(70);
     sprite.body.maxVelocity.set(200);
+    shield.body.drag.set(70);
+    shield.body.maxVelocity.set(200);
 
     //  Tell the Weapon to track the 'player' Sprite
     //  With no offsets from the position
     //  But the 'true' argument tells the weapon to track sprite rotation
     weapon.trackSprite(sprite, 0, 0, true);
+    weapon2.trackSprite(sprite, 0, 0, true);
 
     cursors = this.input.keyboard.createCursorKeys();
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
+    boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
     //
 	//cursor follow arrow
@@ -104,10 +102,11 @@ function create() {
 
     // sprite = game.add.sprite(400, 300, 'arrow');
     sprite.anchor.setTo(0.5, 0.5);
+    shield.anchor.setTo(0.45, 0.5);
 
     //  Enable Arcade Physics for the sprite
     game.physics.enable(sprite, Phaser.Physics.ARCADE);
-    game.physics.enable(circle, Phaser.Physics.ARCADE);
+    game.physics.enable(shield, Phaser.Physics.ARCADE);
 
     //  Tell it we don't want physics to manage the rotation
     // sprite.body.allowRotation = false;
@@ -118,55 +117,82 @@ function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
     
     game.physics.p2.enable(sprite);
-    game.physics.p2.enable(circle);
     cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(sprite);
 
 }
 
 function update() {
-
-    if (cursors.up.isDown)
+    //handles the shield disappearing when boost or shooting is initiated
+    if (fireButton.isDown || boost.isDown)
     {
-        game.physics.arcade.accelerationFromRotation(sprite.rotation, 300, sprite.body.acceleration);
+        shield.visible = false;
     }
     else
     {
-        sprite.body.acceleration.set(0);
+        shield.visible = true;
     }
-
-    if (cursors.left.isDown)
-    {
-        sprite.body.angularVelocity = -300;
-    }
-    else if (cursors.right.isDown)
-    {
-        sprite.body.angularVelocity = 300;
-    }
-    else
-    {
-        sprite.body.angularVelocity = 0;
-    }
-
+    //the firing methods
     if (fireButton.isDown)
     {
         weapon.fire();
     }
+    else if (fireButton2.isDown)
+    {
+        //this tells weapon2 to shoot at a specific Sprite, in this case, the flag
+        weapon2.fireAtSprite(flag);
+    }
+    //the boost adjustments
+    if (boost.isDown)
+    {
+        console.log('BOOOOOOOOOST')
+        sprite.body.maxVelocity.set(600);
+        sprite.body.drag.set(0);
+        shield.body.maxVelocity.set(600);
+        shield.body.drag.set(0);
+    }
+    else
+    {
+        sprite.body.maxVelocity.set(200);
+        sprite.body.drag.set(70);
+        shield.body.maxVelocity.set(200);
+        shield.body.drag.set(70);
+    }
+    if (cursors.up.isDown)
+    {
+        game.physics.arcade.accelerationFromRotation(sprite.rotation, 300, sprite.body.acceleration);
+        game.physics.arcade.accelerationFromRotation(shield.rotation, 300, shield.body.acceleration);
+    }
+    else
+    {
+        sprite.body.acceleration.set(0);
+        shield.body.acceleration.set(0);
+    }
+    if (cursors.left.isDown)
+    {
+        sprite.body.angularVelocity = -300;
+        shield.body.angularVelocity = -300;
+    }
+    else if (cursors.right.isDown)
+    {
+        sprite.body.angularVelocity = 300;
+        shield.body.angularVelocity = 300;
+    }
+    else
+    {
+        sprite.body.angularVelocity = 0;
+        shield.body.angularVelocity = 0;
+    }
+    
 
     game.world.wrap(sprite, 16);
 
-    // sprite.rotation = game.physics.arcade.angleToPointer(sprite);
     sprite.rotation = game.physics.arcade.moveToPointer(sprite, 60, game.input.activePointer, 500);
+    shield.rotation = game.physics.arcade.moveToPointer(shield, 60, game.input.activePointer, 500);
 
 }
 
 function render() {
-
-    // weapon.debug();
-    // game.debug.spriteInfo(sprite, 32, 32);
-    game.debug.geom(circle,'#cfffff');
-    // game.debug.text('Diameter : '+circle.diameter,50,200);
-    // game.debug.text('Circumference : '+circle.circumference(),50,230);
 
 }
 
