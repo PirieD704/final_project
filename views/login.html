@@ -13,12 +13,24 @@
 					<div class='col-sm-4 box'>
 						<input type='text' ng-model='username' placeholder='Enter your username' minlength='4' maxlength='50' class='form-control'>
 					</div>
+
+					<div class='row welcome' ng-show="notFound">
+						<div class='col-sm-4'>
+							<h4>Sorry, we don't recognize this username. Why don't you sign up on our register page?</h4>
+						</div>
+					</div>
 				
 					<label class='col-sm-2'>
 						Password:
 					</label>
 					<div class='col-sm-4 box'>
 						<input type='password' ng-model='password' placeholder='Enter your password' minlength='4' maxlength='50' class='form-control'>
+					</div>
+
+					<div class='row welcome' ng-show="badPass">
+						<div class='col-sm-4'>
+							<h4>Sorry, this password doesn't match the username.</h4>
+						</div>
 					</div>
 
 					<div class='row'>
@@ -41,11 +53,6 @@
 				</div>
 			</div>	
 
-			<div class='row welcome' ng-show="notFound">
-				<div class='col-sm-4'>
-					<h4>Sorry, we don't recognize this username and password. Why don't you sign up on our register page?</h4>
-				</div>
-			</div>
 		</div>
 
 	</div>
