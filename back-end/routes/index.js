@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-// var mongoose = require('mongoose');
-var mongoUrl = 'mongodb://localhost:27017/game';
-// var Account = require('../models/accounts');
-// mongoose.connect(mongoUrl);
+var mongoose = require('mongoose');
+var mongoUrl = 'mongodb://localhost:27017/finalGame';
+var Account = require('../models/accounts');
+mongoose.connect(mongoUrl);
 
 // include bcrypt to store hashed pass
-// var bcrypt = require('bcrypt-nodejs');
+var bcrypt = require('bcrypt-nodejs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
