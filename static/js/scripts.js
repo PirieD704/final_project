@@ -145,7 +145,6 @@ function update() {
     //the boost adjustments
     if (boost.isDown)
     {
-        console.log('BOOOOOOOOOST')
         sprite.body.maxVelocity.set(600);
         sprite.body.drag.set(0);
         shield.body.maxVelocity.set(600);
