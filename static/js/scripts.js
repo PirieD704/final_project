@@ -30,8 +30,10 @@ var circle, sprite, weapon, cursors, fireButton;
 function preload() {
 
 	game.load.image('background', '/static/images/background.png');
-	game.load.image('particle', '/static/images/green_particle.png')
+	game.load.image('particle', '/static/images/green_particle.png');
+    game.load.image('flare', '/static/images/flare.png');
     game.load.image('player', '/static/images/player_1.png');
+    game.load.image('flag', '/static/images/unclaimed_flag.png');
     game.load.image('shield', '/static/images/shield_final_project.png');
 
 }
@@ -41,25 +43,32 @@ function create() {
 	game.add.tileSprite(0, 0, 1920, 1920, 'background');
     //  Creates 30 bullets, using the 'bullet' graphic
     weapon = game.add.weapon(30, 'particle');
+    weapon2 = game.add.weapon(1, 'flare');
+    // weapon2.scale.setTo(0.35, 0.35);
 
 
     //  The bullets will be automatically killed when they are 2000ms old
     weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     weapon.bulletLifespan = 2000;
+    weapon2.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    weapon2.bulletLifespan = 1200;
 
     //  The speed at which the bullet is fired
     weapon.bulletSpeed = 700;
+    weapon2.bulletSpeed = 300;
 
     //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
     weapon.fireRate = 300;
+    weapon2.fireRate = 300;
 
     //  Wrap bullets around the world bounds to the opposite side
     // weapon.bulletWorldWrap = true;
     sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
+    // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
+    flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
+    flag.scale.setTo(0.35, 0.35);
     sprite.scale.setTo(0.35, 0.35);
-    circleObj = new Phaser.Circle(game.world.centerX, 100,64);
-    circle = game.add.sprite(game.world.centerX, game.world.centerY, circle);
 
     sprite.anchor.set(0.5);
     shield.anchor.set(0.5);
@@ -76,10 +85,13 @@ function create() {
     //  With no offsets from the position
     //  But the 'true' argument tells the weapon to track sprite rotation
     weapon.trackSprite(sprite, 0, 0, true);
+    weapon2.trackSprite(sprite, 0, 0, true);
 
     cursors = this.input.keyboard.createCursorKeys();
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
+    boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
     //
 	//cursor follow arrow
@@ -111,7 +123,41 @@ function create() {
 }
 
 function update() {
-
+    //handles the shield disappearing when boost or shooting is initiated
+    if (fireButton.isDown || boost.isDown)
+    {
+        shield.visible = false;
+    }
+    else
+    {
+        shield.visible = true;
+    }
+    //the firing methods
+    if (fireButton.isDown)
+    {
+        weapon.fire();
+    }
+    else if (fireButton2.isDown)
+    {
+        //this tells weapon2 to shoot at a specific Sprite, in this case, the flag
+        weapon2.fireAtSprite(flag);
+    }
+    //the boost adjustments
+    if (boost.isDown)
+    {
+        console.log('BOOOOOOOOOST')
+        sprite.body.maxVelocity.set(600);
+        sprite.body.drag.set(0);
+        shield.body.maxVelocity.set(600);
+        shield.body.drag.set(0);
+    }
+    else
+    {
+        sprite.body.maxVelocity.set(200);
+        sprite.body.drag.set(70);
+        shield.body.maxVelocity.set(200);
+        shield.body.drag.set(70);
+    }
     if (cursors.up.isDown)
     {
         game.physics.arcade.accelerationFromRotation(sprite.rotation, 300, sprite.body.acceleration);
@@ -122,7 +168,6 @@ function update() {
         sprite.body.acceleration.set(0);
         shield.body.acceleration.set(0);
     }
-
     if (cursors.left.isDown)
     {
         sprite.body.angularVelocity = -300;
@@ -138,32 +183,16 @@ function update() {
         sprite.body.angularVelocity = 0;
         shield.body.angularVelocity = 0;
     }
-
-    if (fireButton.isDown)
-    {
-        weapon.fire();
-        shield.visible = false;
-    }
-    else
-    {
-        shield.visible = true;
-    }
+    
 
     game.world.wrap(sprite, 16);
 
-    // sprite.rotation = game.physics.arcade.angleToPointer(sprite);
     sprite.rotation = game.physics.arcade.moveToPointer(sprite, 60, game.input.activePointer, 500);
     shield.rotation = game.physics.arcade.moveToPointer(shield, 60, game.input.activePointer, 500);
 
 }
 
 function render() {
-
-    // weapon.debug();
-    // game.debug.spriteInfo(sprite, 32, 32);
-    game.debug.geom(circle,'#cfffff');
-    // game.debug.text('Diameter : '+circle.diameter,50,200);
-    // game.debug.text('Circumference : '+circle.circumference(),50,230);
 
 }
 
