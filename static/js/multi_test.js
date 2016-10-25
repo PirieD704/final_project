@@ -1,31 +1,8 @@
-/*
-* ---------
-* -- CANVAS/PHASER
-* ---------
-*/	
-
-/*
-from - http://phaser.io/tutorials/making-your-first-phaser-game
-The first two parameters are the width and the height of the canvas element
-
-The third parameter can be either Phaser.CANVAS, Phaser.WEBGL, or Phaser.AUTO. 
-This is the rendering context that you want to use. The recommended parameter is 
-Phaser.AUTO which automatically tries to use WebGL, but if the browser or device doesn't 
-support it it'll fall back to Canvas.
-
-The fourth parameter is an empty string, this is the id of the DOM element in which you would 
-like to insert the canvas element that Phaser creates. As we've left it blank it will simply 
-be appended to the body.
-
-The final parameter is an object containing four references to Phasers essential functions.
-
-*/
-
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: update, render:render });
 
-
-var circle, sprite, weapon, cursors, fireButton;
+var sprite, blueTeamList, redTeamList, blueBulletList, redBullletList, weapon, weapon2, cursors, fireButton, fireButton2, boost;
+var redTotal, blueTotal = 0;
 
 function preload() {
 
@@ -34,7 +11,7 @@ function preload() {
     game.load.image('flare', '/static/images/flare.png');
     game.load.image('player', '/static/images/player_1.png');
     game.load.image('flag', '/static/images/unclaimed_flag.png');
-    game.load.image('shield', '/static/images/shield_final_project.png');
+    game.load.atlas('shield', '/static/images/shield_final_project.png');
 
 }
 
@@ -45,6 +22,12 @@ function create() {
     weapon = game.add.weapon(30, 'particle');
     weapon2 = game.add.weapon(1, 'flare');
     // weapon2.scale.setTo(0.35, 0.35);
+
+    blueTeamList, redTeamList = {};
+    player = new Player(myId, game, sprite);
+    sprite = player.sprite;
+    weapon = player.weapon;
+    weapon2 = player.weapon2;
 
 
     //  The bullets will be automatically killed when they are 2000ms old
@@ -194,22 +177,3 @@ function update() {
 function render() {
 
 }
-
-// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
-
-// var circle;
-// var floor;
-
-// function create() {
-
-//     circle = new Phaser.Circle(game.world.centerX, 100,64);
-
-// }
-
-// function render () {
-
-//     game.debug.geom(circle,'#cfffff');
-//     game.debug.text('Diameter : '+circle.diameter,50,200);
-//     game.debug.text('Circumference : '+circle.circumference(),50,230);
-
-// }
