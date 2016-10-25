@@ -3,12 +3,12 @@ gameApp.directive()
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout){
 
 	var apiPath = 'http://localhost:3000';
-
 	
 	//registration page 
 	$scope.register = function(){
 		if($scope.password != $scope.password2){
 			$scope.invalidPass = true;
+			$rootScope.loggedIn = false;
 			$timeout(function(){
 				$scope.invalidPass = false;
 			}, 1500);
@@ -21,6 +21,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				console.log(response.data);
 				if(response.data.name == 'nameTaken'){
 					$scope.nameTaken = true;
+					$rootScope.loggedIn = false;
 					$timeout(function(){
 						$scope.nameTaken = false;
 					}, 1500);
@@ -28,6 +29,8 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				if(response.data.message == 'added'){
 					$scope.welcome = true;
 					$cookies.put('username', $scope.username);
+					$rootScope.loggedIn = true;
+					$('.navbar-text').text('Signed in as ' + $scope.username);
 					$timeout(function(){
 						$location.path('/canvas');
 					}, 1500);
@@ -48,16 +51,20 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			if(response.data.success == 'userFound'){
 				$scope.welcome = true;
 				$cookies.put('username', $scope.username);
+				$rootScope.loggedIn = true;
+				$('.navbar-text').text('Signed in as ' + $scope.username);
 				$timeout(function(){
 					$location.path('/canvas');
 				}, 1500);
 			}else if(response.data.failure == 'noUser'){
 				$scope.notFound = true;
+				$rootScope.loggedIn = false;
 				$timeout(function(){
 					$scope.notFound = false;
 				}, 1500);
 			}else if(response.data.failure == 'badPass'){
 				$scope.badPass = true;
+				$rootScope.loggedIn = false;
 				$timeout(function(){
 					$scope.badPass = false;
 				}, 1500);
@@ -65,6 +72,14 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		}, function errorCallback(response){
 			console.log(response);
 		})
+	};
+
+	//logout function
+	$scope.logout = function(){
+		$cookies.remove('username');
+		$rootScope.loggedIn = false;
+		$location.path('/');
+		location.reload();
 	};
 
 	// login view

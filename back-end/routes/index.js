@@ -45,23 +45,17 @@ router.post('/login', function(req, res, next){
 	Account.findOne(
 		{username: req.body.username}, //this is the droid we're looking for
 		function(error, document){
-			//document is the document returned from our Mongo query... ie. the droid
-			//the document will have a property for each field. we need to check the password
-			//in the database against the hashed bcrypt version
+
 			if(document == null){
 				//no match
 				res.json({failure:'noUser'});
 			}else{
-				//run comparesync. first param is the english password, second param is the hash. 
-				//they will return true if equal, false if not
 				var loginResult = bcrypt.compareSync(req.body.password, document.password);
 				if(loginResult){
-					//the password is correct, log them in
-					//update the token each time the user logs in
 					Account.update({username: document.username}).exec();
 					res.json({success:'userFound', username: document.username,});
+					loggedIn = true;
 				}else{
-					//hashes did not match or the doc wasn't found. goodbye
 					res.json({failure: 'badPass'});
 				}
 			}
