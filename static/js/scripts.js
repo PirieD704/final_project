@@ -33,7 +33,9 @@ function preload() {
 	game.load.image('particle', '/static/images/green_particle.png');
     game.load.image('flare', '/static/images/flare.png');
     game.load.image('player', '/static/images/player_1.png');
-    game.load.image('flag', '/static/images/unclaimed_flag.png');
+    game.load.image('flag', '/static/images/flag_orb_unclaimed.png');
+    game.load.image('blueFlag', '/static/images/flag_orb_blue.png');
+    game.load.image('redFlag', '/static/images/flag_orb_red.png');
     game.load.image('shield', '/static/images/shield_final_project.png');
 
 }
@@ -54,11 +56,11 @@ function create() {
     weapon2.bulletLifespan = 1200;
 
     //  The speed at which the bullet is fired
-    weapon.bulletSpeed = 700;
+    weapon.bulletSpeed = 900;
     weapon2.bulletSpeed = 300;
 
     //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-    weapon.fireRate = 300;
+    weapon.fireRate = 100;
     weapon2.fireRate = 300;
 
     //  Wrap bullets around the world bounds to the opposite side
@@ -66,9 +68,10 @@ function create() {
     sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
     // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
-    flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
-    flag.scale.setTo(0.35, 0.35);
+    flag = this.game.add.sprite(this.game.world.centerX, (this.game.world.centerY-300), 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
+    flag.scale.setTo(0.2, 0.2);
     sprite.scale.setTo(0.35, 0.35);
+    console.log(flag);
 
     sprite.anchor.set(0.5);
     shield.anchor.set(0.5);
@@ -80,6 +83,24 @@ function create() {
     sprite.body.maxVelocity.set(200);
     shield.body.drag.set(70);
     shield.body.maxVelocity.set(200);
+
+    // creat our team and flag groups
+    blueTeam = game.add.group();
+    blueTeam.enableBody = true;
+    blueTeam.physicsBodyType = Phaser.Physics.ARCADE;
+    redTeam = game.add.group();
+    redTeam.enableBody = true;
+    redTeam.physicsBodyType = Phaser.Physics.ARCADE;
+    flagGroup = game.add.group();
+    flagGroup.enableBody = true;
+    flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
+    // add sprite to a team
+    blueTeam.add(sprite);
+
+    // add flag to flag group
+    flagGroup.add(flag);
+
 
     //  Tell the Weapon to track the 'player' Sprite
     //  With no offsets from the position
@@ -105,8 +126,13 @@ function create() {
     shield.anchor.setTo(0.45, 0.5);
 
     //  Enable Arcade Physics for the sprite
-    game.physics.enable(sprite, Phaser.Physics.ARCADE);
-    game.physics.enable(shield, Phaser.Physics.ARCADE);
+    game.physics.enable([sprite, shield], Phaser.Physics.ARCADE);
+    // game.physics.enable(shield, Phaser.Physics.ARCADE);
+
+    sprite.name = 'mainPlayer';
+    flag.name = 'theFlag'
+    group = game.add.physicsGroup();
+
 
     //  Tell it we don't want physics to manage the rotation
     // sprite.body.allowRotation = false;
@@ -119,10 +145,40 @@ function create() {
     game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(sprite);
+    // Turn on impact events for the world, without this we get no collision callbacks
+    game.physics.p2.setImpactEvents(true);
+    game.physics.p2.restitution = 0.8;
+
+    // create our collision groups
+    // var redTeamCollisionGroup = game.physics.p2.createCollisionGroup();
+    // var blueTeamCollisionGroup = game.physics.p2.createCollisionGroup();
+    // var flagCollisionGroup = game.physics.p2.createCollisionGroup();
+
+    // // We need objects their own collision groups to still collide with the world bounds
+    // game.physics.p2.updateBoundsCollisionGroup();
+
+    // // set the player's collision group
+    // sprite.body.setCollisionGroup(blueTeamCollisionGroup);
+
+    // // set the flag's collision group
+    // flag.body.setCollisionGroup(flagCollisionGroup);
+
+    // // tells what happens when the ship collides with something else
+    // sprite.body.collides([blueTeamCollisionGroup, flagCollisionGroup, redTeamCollisionGroup], madeCollision, this);
+
+    // // tells what happens when the flag gets run over
+    // flag.body.collides([blueTeamCollisionGroup, redTeamCollisionGroup], madeCollision, this);
+
 
 }
 
+
 function update() {
+
+    // this to check the overlap of two items
+    game.physics.arcade.overlap(blueTeam, flagGroup, collisionHandler, null, this);
+
+
     //handles the shield disappearing when boost or shooting is initiated
     if (fireButton.isDown || boost.isDown)
     {
@@ -189,6 +245,12 @@ function update() {
     sprite.rotation = game.physics.arcade.moveToPointer(sprite, 60, game.input.activePointer, 500);
     shield.rotation = game.physics.arcade.moveToPointer(shield, 60, game.input.activePointer, 500);
 
+}
+
+// our callback for when a collision is made
+function collisionHandler(){
+    console.log("collision!")
+    flag.loadTexture('blueFlag', 0)
 }
 
 function render() {
