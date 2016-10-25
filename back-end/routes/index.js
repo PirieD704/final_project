@@ -87,6 +87,10 @@ router.post('/login', function(req, res, next){
 	)
 });
 
+//============================================================
+// -- CREATE A SERVER
+//============================================================
+
 var socketIo = require('socket.io');
 
 io.sockets.on('connect',function(socket){
