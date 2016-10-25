@@ -5,6 +5,9 @@ var mongoUrl = 'mongodb://localhost:27017/finalGame';
 var Account = require('../models/accounts');
 var http = require('http');
 var fs = require('fs');
+var app = require('express')();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 mongoose.connect(mongoUrl);
 
@@ -84,6 +87,10 @@ router.post('/login', function(req, res, next){
 	)
 });
 
+//============================================================
+// -- CREATE A SERVER
+//============================================================
+
 var socketIo = require('socket.io');
 
 io.sockets.on('connect',function(socket){
@@ -102,5 +109,6 @@ io.sockets.on('connect',function(socket){
 			date: data.date
 		})
 	})
+});	
 
 module.exports = router;

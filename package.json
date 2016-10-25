@@ -17,6 +17,7 @@
     "morgan": "~1.7.0",
     "phaser": "^2.6.2",
     "serve-favicon": "~2.3.0",
-    "serve-static": "^1.11.1"
+    "serve-static": "^1.11.1",
+    "socket.io": "^1.5.1"
   }
 }
