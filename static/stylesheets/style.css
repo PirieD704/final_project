@@ -1,11 +1,15 @@
 body {
-  margin: 0px;
-  padding: 0px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	margin: 0px;
+	padding: 0px;
+  	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
+}
+
+#views{
+	margin-top: 50px;
 }
 
 canvas {
