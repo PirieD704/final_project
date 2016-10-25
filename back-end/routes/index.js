@@ -3,10 +3,31 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var mongoUrl = 'mongodb://localhost:27017/finalGame';
 var Account = require('../models/accounts');
+var http = require('http');
+var fs = require('fs');
+
 mongoose.connect(mongoUrl);
 
 // include bcrypt to store hashed pass
 var bcrypt = require('bcrypt-nodejs');
+
+
+//============================================================
+// -- CREATE A SERVER
+//============================================================
+var server = http.createServer(function(req, res){
+	fs.readFile('index.html', 'utf-8', function(error, data){
+		// console.log(error);
+		// console.log(data);
+		if(error){
+			res.writeHead(500,{'content-type': 'text/html'})
+			res.end(error);
+		}else{
+			res.writeHead(200,{'content-type':'text/html'});
+			res.end(data);
+		}
+	})
+})
 
 router.use(function(req, res, next) {
  res.header("Access-Control-Allow-Origin", "*");
@@ -62,5 +83,24 @@ router.post('/login', function(req, res, next){
 		}
 	)
 });
+
+var socketIo = require('socket.io');
+
+io.sockets.on('connect',function(socket){
+	console.log(socket.id);
+	socketUsers.push({
+		socketID: socket.id,
+		name: 'Anonymous'
+	})
+	io.sockets.emit('users', socketUsers);
+
+	console.log('someone has connected via a socket!');
+	socket.on('message_to_server', function(data){
+		io.sockets.emit('message_to_client', {
+			message: data.message,
+			name: data.name,
+			date: data.date
+		})
+	})
 
 module.exports = router;
