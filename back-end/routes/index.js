@@ -3,10 +3,31 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var mongoUrl = 'mongodb://localhost:27017/finalGame';
 var Account = require('../models/accounts');
+var http = require('http');
+var fs = require('fs');
+
 mongoose.connect(mongoUrl);
 
 // include bcrypt to store hashed pass
 var bcrypt = require('bcrypt-nodejs');
+
+
+//============================================================
+// -- CREATE A SERVER
+//============================================================
+var server = http.createServer(function(req, res){
+	fs.readFile('index.html', 'utf-8', function(error, data){
+		// console.log(error);
+		// console.log(data);
+		if(error){
+			res.writeHead(500,{'content-type': 'text/html'})
+			res.end(error);
+		}else{
+			res.writeHead(200,{'content-type':'text/html'});
+			res.end(data);
+		}
+	})
+})
 
 router.use(function(req, res, next) {
  res.header("Access-Control-Allow-Origin", "*");
@@ -45,28 +66,41 @@ router.post('/login', function(req, res, next){
 	Account.findOne(
 		{username: req.body.username}, //this is the droid we're looking for
 		function(error, document){
-			//document is the document returned from our Mongo query... ie. the droid
-			//the document will have a property for each field. we need to check the password
-			//in the database against the hashed bcrypt version
+
 			if(document == null){
 				//no match
 				res.json({failure:'noUser'});
 			}else{
-				//run comparesync. first param is the english password, second param is the hash. 
-				//they will return true if equal, false if not
 				var loginResult = bcrypt.compareSync(req.body.password, document.password);
 				if(loginResult){
-					//the password is correct, log them in
-					//update the token each time the user logs in
 					Account.update({username: document.username}).exec();
 					res.json({success:'userFound', username: document.username,});
+					loggedIn = true;
 				}else{
-					//hashes did not match or the doc wasn't found. goodbye
 					res.json({failure: 'badPass'});
 				}
 			}
 		}
 	)
 });
+
+var socketIo = require('socket.io');
+
+io.sockets.on('connect',function(socket){
+	console.log(socket.id);
+	socketUsers.push({
+		socketID: socket.id,
+		name: 'Anonymous'
+	})
+	io.sockets.emit('users', socketUsers);
+
+	console.log('someone has connected via a socket!');
+	socket.on('message_to_server', function(data){
+		io.sockets.emit('message_to_client', {
+			message: data.message,
+			name: data.name,
+			date: data.date
+		})
+	})
 
 module.exports = router;
