@@ -57,6 +57,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$timeout(function(){
 						$location.path('/lobby');
 					}, 1500);
+					setTimeout(tutorialModal, 1600);
 				}
 			}, function errorCallback(response){
 				console.log(response);
@@ -122,6 +123,20 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	$scope.toCanvas = () => {
 		$location.path('/canvas');
 	};
+
+	//======================
+	// -- TUTORIAL INIT --
+	//======================
+
+	function tutorialModal(){
+		$('#tutorialModal').modal();
+	}
+
+	$scope.help = function(){
+		tutorialModal();
+		$location.path('/lobby');
+	}
+
 	//==================================================
 	// SOCKET FUNCTIONS
 	//==================================================
@@ -132,8 +147,6 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		socket.emit('user_to_server', username);
 		//end socket emit
 	}
-
-
 	//==================================================
 	// SOCKET EMITS/ONS
 	//==================================================
