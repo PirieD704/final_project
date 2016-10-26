@@ -1,11 +1,13 @@
-var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
-gameApp.directive()
-gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout){
+// var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
+gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 
 	var apiPath = 'http://localhost:3000';
 	var socket_users = [];
-	
-	//registration page 
+	socket.on('users', function(users){
+		socket_users = users
+		console.log(socket_users);
+	})
+	// registration page 
 	$scope.register = function(){
 		if($scope.password != $scope.password2){
 			$scope.invalidPass = true;
@@ -28,6 +30,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					}, 1500);
 				}
 				if(response.data.message == 'added'){
+					//this function goes out to sockets and updates new username
+					updateUsername();
+					//end socket emit
 					$scope.welcome = true;
 					$cookies.put('username', $scope.username);
 					$rootScope.loggedIn = true;
@@ -50,6 +55,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			password: $scope.password
 		}).then(function successCallback(response){
 			if(response.data.success == 'userFound'){
+				//this function goes out to sockets and updates new username
+				updateUsername();
+				//end socket emit
 				$scope.welcome = true;
 				$cookies.put('username', $scope.username);
 				$rootScope.loggedIn = true;
@@ -107,7 +115,12 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	// SOCKET FUNCTIONS
 	//==================================================
 	// These are functions we call in the controller to talk to sockets and get data back and forth.
-
+	function updateUsername(){
+		//send username to sockets to update username
+		username = $scope.username;
+		socket.emit('user_to_server', username);
+		//end socket emit
+	}
 
 
 	//==================================================
