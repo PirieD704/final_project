@@ -3,6 +3,7 @@ gameApp.directive()
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout){
 
 	var apiPath = 'http://localhost:3000';
+	var socket_users = [];
 	
 	//registration page 
 	$scope.register = function(){
@@ -32,7 +33,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$rootScope.loggedIn = true;
 					$('.navbar-text').text('Signed in as ' + $scope.username);
 					$timeout(function(){
-						$location.path('/canvas');
+						$location.path('/lobby');
 					}, 1500);
 				}
 			}, function errorCallback(response){
@@ -54,7 +55,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				$rootScope.loggedIn = true;
 				$('.navbar-text').text('Signed in as ' + $scope.username);
 				$timeout(function(){
-					$location.path('/canvas');
+					$location.path('/lobby');
 				}, 1500);
 			}else if(response.data.failure == 'noUser'){
 				$scope.notFound = true;
@@ -73,6 +74,12 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			console.log(response);
 		})
 	};
+
+	
+	$scope.user = $cookies.get('username');
+	console.log($cookies.get('username'));
+	console.log($scope.user); 
+
 
 	//logout function
 	$scope.logout = function(){
@@ -96,8 +103,20 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	$scope.toCanvas = () => {
 		$location.path('/canvas');
 	};
+	//==================================================
+	// SOCKET FUNCTIONS
+	//==================================================
+	// These are functions we call in the controller to talk to sockets and get data back and forth.
+
+
+
+	//==================================================
+	// SOCKET EMITS/ONS
+	//==================================================
+	// These are global emits/on calls between sockets
 
 })
+
 
 gameApp.config(($routeProvider) => {
 	$routeProvider.when('/', {
@@ -105,6 +124,9 @@ gameApp.config(($routeProvider) => {
 		controller: 'mainController'
 	}).when('/login',{
 		templateUrl: 'views/login.html',
+		controller: 'mainController'
+	}).when('/lobby',{
+		templateUrl: 'views/lobby.html',
 		controller: 'mainController'
 	}).when('/canvas',{
 		templateUrl: 'views/canvas.html',

@@ -78,8 +78,14 @@ var users = [];
 
 io.sockets.on('connect',function(socket){
 	console.log(socket.id);
-	users.push({socketID: socket.id})
+	users.push({
+		socketID: socket.id,
+		username: 'Anonymous'
+	})
+	console.log(users)
 	console.log('someone has connected via a socket!');
+	io.sockets.emit('users', users);
+
 	socket.on('disconnect', function(){
 		console.log(socket.id + ' has disconnected');
 		for(var i = 0; i< users.length; i++){
