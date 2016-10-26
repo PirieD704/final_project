@@ -3,10 +3,27 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 
 	var apiPath = 'http://localhost:3000';
 	var socket_users = [];
-	socket.on('users', function(users){
-		socket_users = users
+
+	socket.on('users', function(users, callback){
+		var blueTeam = [];
+		var redTeam = [];
+		socket_users = users;
 		console.log(socket_users);
+		for(var i = 0; i < socket_users.length; i++){
+			if (socket_users[i].team === 'Blue'){
+				blueTeam.push(socket_users[i]);
+				console.log(blueTeam)
+			}else if (socket_users[i].team === 'Red'){
+				redTeam.push(socket_users[i]);
+				console.log(redTeam)
+			}else{
+				console.log('error - no team');
+			}
+		}
+		$scope.blueTeam = blueTeam;
+		$scope.redTeam = redTeam;
 	})
+
 	// registration page 
 	$scope.register = function(){
 		if($scope.password != $scope.password2){

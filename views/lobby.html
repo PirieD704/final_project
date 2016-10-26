@@ -11,8 +11,8 @@
 				<h4>Blue Team Players</h4>
 			</div>
 			<div class='panel-body'>
-				<ul class='list-group'>
-					<li class='list-group-item' ng-model='user'></li>
+				<ul class='list-group' ng-repeat="user in blueTeam">
+					<li class='list-group-item'>{{user.username}}</li>
 				</ul>
 			</div>
 		</div>
@@ -22,8 +22,8 @@
 				<h4>Red Team Players</h4>
 			</div>
 			<div class='panel-body'>
-				<ul class='list-group'>
-					<li class='list-group-item'>Player TBD</li>
+				<ul class='list-group' ng-repeat="user in redTeam">
+					<li class='list-group-item'>{{user.username}}</li>
 				</ul>
 			</div>
 		</div>  
