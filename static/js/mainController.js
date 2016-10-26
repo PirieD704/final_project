@@ -100,12 +100,6 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		})
 	};
 
-	
-	$scope.user = $cookies.get('username');
-	console.log($cookies.get('username'));
-	console.log($scope.user); 
-
-
 	//logout function
 	$scope.logout = function(){
 		$cookies.remove('username');
