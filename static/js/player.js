@@ -25,7 +25,7 @@ Player = function (index, game, player, ) {
     this.weapon = game.add.group();
     this.weapon.enableBody = true;
     this.weapon.physicsBodyType = Phaser.Physics.ARCADE;
-    this.weapon.createMultiple(20, 'particle', 0, false);
+    this.weapon.createMultiple(80, 'particle', 0, false);
     this.weapon.setAll('anchor.x', 0.5);
     this.weapon.setAll('anchor.y', 0.5);
     this.weapon.setAll('outOfBoundsKill', true);
@@ -34,7 +34,7 @@ Player = function (index, game, player, ) {
     this.weapon2 = game.add.group();
     this.weapon2.enableBody = true;
     this.weapon2.physicsBodyType = Phaser.Physics.ARCADE;
-    this.weapon2.createMultiple(20, 'particle', 0, false);
+    this.weapon2.createMultiple(10, 'flare', 0, false);
     this.weapon2.setAll('anchor.x', 0.5);
     this.weapon2.setAll('anchor.y', 0.5);
     this.weapon2.setAll('outOfBoundsKill', true);
