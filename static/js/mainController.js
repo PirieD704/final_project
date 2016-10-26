@@ -33,7 +33,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$rootScope.loggedIn = true;
 					$('.navbar-text').text('Signed in as ' + $scope.username);
 					$timeout(function(){
-						$location.path('/canvas');
+						$location.path('/lobby');
 					}, 1500);
 				}
 			}, function errorCallback(response){
@@ -55,7 +55,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				$rootScope.loggedIn = true;
 				$('.navbar-text').text('Signed in as ' + $scope.username);
 				$timeout(function(){
-					$location.path('/canvas');
+					$location.path('/lobby');
 				}, 1500);
 			}else if(response.data.failure == 'noUser'){
 				$scope.notFound = true;
@@ -74,6 +74,12 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			console.log(response);
 		})
 	};
+
+	
+	$scope.user = $cookies.get('username');
+	console.log($cookies.get('username'));
+	console.log($scope.user); 
+
 
 	//logout function
 	$scope.logout = function(){
@@ -118,6 +124,9 @@ gameApp.config(($routeProvider) => {
 		controller: 'mainController'
 	}).when('/login',{
 		templateUrl: 'views/login.html',
+		controller: 'mainController'
+	}).when('/lobby',{
+		templateUrl: 'views/lobby.html',
 		controller: 'mainController'
 	}).when('/canvas',{
 		templateUrl: 'views/canvas.html',
