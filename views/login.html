@@ -14,7 +14,7 @@
 						<input type='text' ng-model='username' placeholder='Enter your username' minlength='4' maxlength='50' class='form-control'>
 					</div>
 				</div>	
-				<div class='row welcome' ng-show="notFound">
+				<div class='row alert' ng-show="notFound">
 					<div class='col-sm-4'>
 						<h4>Sorry, we don't recognize this username. Why don't you sign up on our register page?</h4>
 					</div>
@@ -27,17 +27,15 @@
 						<input type='password' ng-model='password' placeholder='Enter your password' minlength='4' maxlength='50' class='form-control'>
 					</div>
 				</div>	
-				<div class='row welcome' ng-show="badPass">
-					<div class='col-sm-4'>
+				<div class='row alert' ng-show="badPass">
+					<div class='col-sm-10'>
 						<h4>Sorry, this password doesn't match the username.</h4>
 					</div>
 				</div>
 
-				<div class='form-group'>
-					<div class='row'>
-						<div class='button-holder col-sm-12'>
-							<button type='submit' class='btn btn-success'>Log In</button>
-						</div>
+				<div class='row button'>
+					<div class='button-holder col-sm-12'>
+						<button type='submit' class='btn btn-success'>Log In</button>
 					</div>
 				</div>	
 			</form>
@@ -49,7 +47,7 @@
 			</div>
 
 			<div class='row welcome' ng-show="welcome">
-				<div class='col-sm-4'>
+				<div class='col-sm-10'>
 					<h4>Welcome back, {{username}}.<br> Thanks for visiting us again.</h4>
 				</div>
 			</div>	
