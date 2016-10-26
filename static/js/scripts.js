@@ -89,7 +89,7 @@ function create() {
     flag.scale.setTo(0.2, 0.2);
     sprite.scale.setTo(0.35, 0.35);
     console.log(flag);
-
+    console.log(sprite)
     sprite.anchor.set(0.5);
     shield.anchor.set(0.5);
 
@@ -139,7 +139,7 @@ function create() {
     game.stage.backgroundColor = '#0072bc';
 
     // sprite = game.add.sprite(400, 300, 'arrow');
-    sprite.anchor.setTo(0.5, 0.5);
+    // sprite.anchor.setTo(0.5, 0.5);
     shield.anchor.setTo(0.45, 0.5);
 
     //  Enable Arcade Physics for the sprite

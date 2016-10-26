@@ -1,7 +1,7 @@
 <div class='container register-page'>
 	<div class='row'>
 		<div class='register col-sm-12'>
-			<h1>New Player Registration</h1>
+			<h1>Space Balls New Player Registration</h1>
 		</div>
 
 		<div class='col-sm-12'>
@@ -10,12 +10,12 @@
 					<label class='col-sm-2'>
 						Username:
 					</label>
-					<div class='col-sm-10 box'>
+					<div class='col-sm-4 box'>
 						<input type='text' ng-model='username' placeholder='Enter your username' minlength='4' maxlength='50' class='form-control'>
 					</div>
 				</div>
-				<div class='row welcome' ng-show="nameTaken">
-					<div class='col-sm-4'>
+				<div class='row alert' ng-show="nameTaken">
+					<div class='col-sm-10'>
 						<h4>Sorry, that username's already taken. Please choose another one.</h4>
 					</div>
 				</div>	
@@ -23,7 +23,7 @@
 					<label class='col-sm-2'>
 						Password:
 					</label>
-					<div class='col-sm-10 box'>
+					<div class='col-sm-4 box'>
 						<input type='password' ng-model='password' placeholder='Enter your password' minlength='4' maxlength='50' class='form-control'>
 					</div>
 				</div>	
@@ -31,17 +31,17 @@
 					<label class='col-sm-2'>
 						Confirm Password:
 					</label>
-					<div class='col-sm-10 box'>
+					<div class='col-sm-4 box'>
 						<input type='password' ng-model='password2' placeholder='Please confirm your password' minlength='4' maxlength='50' class='form-control'>
-					</div>
-					<div class='row welcome' ng-show="invalidPass">
-						<div class='col-sm-4'>
-							<h4>Sorry, those passwords don't match. Please re-enter them.</h4>
-						</div>
 					</div>	
 				</div>	
+				<div class='row alert' ng-show="invalidPass">
+					<div class='col-sm-10'>
+						<h4>Sorry, those passwords don't match. Please re-enter them.</h4>
+					</div>
+				</div>
 				
-				<div class='row'>
+				<div class='row button'>
 					<div class='button-holder col-sm-12'>
 						<button type='submit' class='btn btn-success'>Submit</button>
 					</div>
@@ -55,7 +55,7 @@
 			</div>
 
 			<div class='row welcome' ng-show="welcome">
-				<div class='col-sm-4'>
+				<div class='col-sm-10'>
 					<h4>Welcome, {{username}}.<br> Ready to play?</h4>
 				</div>
 			</div>			
