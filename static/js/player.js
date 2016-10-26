@@ -32,6 +32,8 @@ Player = function (game, team, position) {
         boost: false
     }
 
+    this.alive = true;
+
     // var x = 0;
     // var y = 0;
 
@@ -46,6 +48,11 @@ Player = function (game, team, position) {
     // this.team = team.team
     this.player_shield = game.add.sprite(blue_position[position][0], blue_position[position][0], 'shield');
     game.physics.enable(this.player, Phaser.Physics.ARCADE);
+    game.physics.enable(this.player_shield, Phaser.Physics.ARCADE);
+    this.player.body.drag.set(70);
+    this.player.body.maxVelocity.set(200);
+    this.player_shield.body.drag.set(70);
+    this.player_shield.body.maxVelocity.set(200);
     this.player.anchor.set(0.5, 0.5);
     this.player_shield.anchor.set(0.45, 0.5);
 
@@ -103,8 +110,9 @@ Player = function (game, team, position) {
  
 };
 Player.prototype.update = function() {
+    for (var i in this.input) this.cursor[i] = this.input[i];
 
-    if (this.cursors.up.isDown)
+    if (this.cursor.up)
     {
         game.physics.arcade.accelerationFromRotation(this.player.rotation, 300, this.player.body.acceleration);
         game.physics.arcade.accelerationFromRotation(this.player_shield.rotation, 300, this.player_shield.body.acceleration);
@@ -114,12 +122,12 @@ Player.prototype.update = function() {
         this.player.body.acceleration.set(0);
         this.player_shield.body.acceleration.set(0);
     }
-    if (cursors.left.isDown)
+    if (this.cursor.left)
     {
         this.player.body.angularVelocity = -300;
         this.player_shield.body.angularVelocity = -300;
     }
-    else if (cursors.right.isDown)
+    else if (this.cursor.right)
     {
         this.player.body.angularVelocity = 300;
         this.player_shield.body.angularVelocity = 300;
@@ -198,7 +206,10 @@ Player.prototype.update = function() {
     // {
     //     game.physics.arcade.velocityFromRotation(this.tank.rotation, 0, this.tank.body.velocity);
     // }    
+    this.player.rotation = game.physics.arcade.moveToPointer(this.player, 60, game.input.activePointer, 500);
+    this.player_shield.rotation = game.physics.arcade.moveToPointer(this.player_shield, 60, game.input.activePointer, 500);
     
+    game.world.wrap(this.player, 16);
  
 };
 

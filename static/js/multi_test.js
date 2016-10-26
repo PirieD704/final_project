@@ -2,7 +2,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: update, render:render });
 var myId = 1;
 
-var sprite, blueTeamList, redTeamList, blueBulletList, redBullletList, weapon, weapon2, cursors, fireButton, fireButton2, boost;
+var sprite, blueTeamList, redTeamList, blueBulletList, redBullletList, weapon, weapon2, cursors, fireButton, fireButton2, boost, land;
 var redTotal, blueTotal = 0;
 
 // Player = function (id, game, team) {
@@ -48,7 +48,8 @@ function preload() {
 
 function create() {
 
-	game.add.tileSprite(0, 0, 1920, 1920, 'background');
+    playerList = {};
+	land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
      // Creates 30 bullets, using the 'bullet' graphic
     // weapon = game.add.weapon(30, 'particle');
     // weapon2 = game.add.weapon(1, 'flare');
@@ -79,8 +80,10 @@ function create() {
     // weapon.bulletWorldWrap = true;
     // player_orb = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
     this_player = new Player(game, 'blue', 0)
-    console.log(typeof(this_player))
-    console.log(this_player)
+    playerList[myId] = this_player;
+    weapon = this_player.laser;
+    weapon2 = this_player.flare;
+    // console.log(this_player.player_shield)
 
     sprite = this_player.player;
     shield = this_player.shield;
@@ -136,12 +139,32 @@ function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
     
     // game.physics.p2.enable(sprite);
-    // cursors = game.input.keyboard.createCursorKeys();
+    cursors = game.input.keyboard.createCursorKeys();
     game.camera.follow(sprite);
 
 }
 
 function update() {
+
+    this_player.input.up = cursors.up.isDown;
+    this_player.input.left = cursors.left.isDown;
+    this_player.input.right = cursors.right.isDown;
+
+
+    land.tilePosition.x = -game.camera.x;
+    land.tilePosition.y = -game.camera.y;
+
+    for (var i in playerList)
+    {
+        if (!playerList[i]) continue;
+        for (var j in playerList)
+        {
+            if (playerList[j].alive)
+            {
+                playerList[j].update();
+            }           
+        }
+    }
     //handles the shield disappearing when boost or shooting is initiated
     // if (fireButton.isDown || boost.isDown)
     // {
