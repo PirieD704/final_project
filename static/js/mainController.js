@@ -3,6 +3,7 @@ gameApp.directive()
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout){
 
 	var apiPath = 'http://localhost:3000';
+	var socket_users = [];
 	
 	//registration page 
 	$scope.register = function(){
@@ -102,8 +103,20 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	$scope.toCanvas = () => {
 		$location.path('/canvas');
 	};
+	//==================================================
+	// SOCKET FUNCTIONS
+	//==================================================
+	// These are functions we call in the controller to talk to sockets and get data back and forth.
+
+
+
+	//==================================================
+	// SOCKET EMITS/ONS
+	//==================================================
+	// These are global emits/on calls between sockets
 
 })
+
 
 gameApp.config(($routeProvider) => {
 	$routeProvider.when('/', {
