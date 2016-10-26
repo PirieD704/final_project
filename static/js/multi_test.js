@@ -1,5 +1,6 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: update, render:render });
+var myId = 0;
 
 var sprite, blueTeamList, redTeamList, blueBulletList, redBullletList, weapon, weapon2, cursors, fireButton, fireButton2, boost;
 var redTotal, blueTotal = 0;
@@ -46,7 +47,9 @@ function create() {
 
     //  Wrap bullets around the world bounds to the opposite side
     // weapon.bulletWorldWrap = true;
-    sprite = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
+    player_orb = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
+    this_player = new Player(myId, game, player_orb)
+    sprite = this_player.player
     shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
     // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
