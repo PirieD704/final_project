@@ -75,13 +75,22 @@ router.post('/login', function(req, res, next){
 
 var socketIo = require('socket.io');
 var users = [];
+var game_players = [];
 
 io.sockets.on('connect',function(socket){
 	console.log(socket.id);
 	users.push({
 		socketID: socket.id,
-		username: 'Anonymous'
-	})
+		username: 'Anonymous',
+		team: ''
+	});
+	//change users to game_players. this will check who wants to play a game, and then assigns them a team based on the players in the waiting room.
+	//this prevents people just looking at the site from being assigned a team and ruining our system. they would be jerks.
+	if (users.length % 2 === 0){
+		users[users.length -1].team = 'Red'
+	}else{
+		users[users.length -1].team = 'Blue'
+	}
 	console.log(users)
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
@@ -94,6 +103,19 @@ io.sockets.on('connect',function(socket){
 				break;
 			}
 		}
+	})
+	//someone just logged in, updating username to sockets.
+	socket.on('user_to_server', function(name){
+		console.log(socket.id);
+		for(var i = 0; i< users.length; i++){
+			if(users[i].socketID == socket.id){
+				var temp = users[i].username
+				users[i].username = name;
+				console.log(temp + ' has updated name to ' + users[i].username);
+				break;
+			}
+		}
+		io.sockets.emit('users', users);
 	})
 });	
 
