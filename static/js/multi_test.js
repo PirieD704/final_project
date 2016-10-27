@@ -30,12 +30,13 @@ function create() {
         for (i in playerList){
             playersPresent[i] = new Player(game, 'blue', 0, flag, i, playerList[i].socketID);
             myId = playerList[i].socketID;
+            console.log(playerList[i].socketID)
         }
     }else{
         console.log('no players')
     }
     for (i in playersPresent){
-        if (playersPresent[i].player_id == i){
+        if (playersPresent[i].unique_id == myId){
             console.log('i ran');
             weapon = playersPresent[i].laser;
             weapon2 = playersPresent[i].flare;
@@ -43,6 +44,7 @@ function create() {
 
             sprite = playersPresent[i].player;
             shield = playersPresent[i].shield;
+            player = playersPresent[i];
         }
     }
     console.log(sprite)
@@ -83,30 +85,29 @@ function create() {
 }
 
 function update() {
-    for(i in playersPresent){
-        if (playersPresent[i].socketID == myId){
-            playersPresent[i].input.up = cursors.up.isDown;
-            playersPresent[i].input.left = cursors.left.isDown;
-            playersPresent[i].input.right = cursors.right.isDown;
-            playersPresent[i].input.laser = fireButton.isDown;
-            playersPresent[i].input.flare = fireButton2.isDown;
-            playersPresent[i].input.boost = boost.isDown;
-        }
-    }
+    player.input.up = cursors.up.isDown;
+    player.input.left = cursors.left.isDown;
+    player.input.right = cursors.right.isDown;
+    player.input.laser = fireButton.isDown;
+    player.input.flare = fireButton2.isDown;
+    player.input.boost = boost.isDown;
 
     land.tilePosition.x = -game.camera.x;
     land.tilePosition.y = -game.camera.y;
 
-    for (var i in playersPresent)
-    {
-        if (!playersPresent[i]) continue;
-        for (var j in playersPresent)
-        {
-            if (playersPresent[j].alive)
-            {
-                playersPresent[j].update();
-            }           
-        }
+    // for (var i in playersPresent)
+    // {
+    //     if (!playersPresent[i]) continue;
+    //     for (var j in playersPresent)
+    //     {
+    //         if (playersPresent[j].alive)
+    //         {
+    //             playersPresent[j].update();
+    //         }           
+    //     }
+    // }
+    if(player.alive){
+        player.update();
     }
 
 }

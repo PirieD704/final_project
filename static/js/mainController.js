@@ -1,6 +1,7 @@
 // var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
 
 playerList = {};
+myId = 0;
 
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 
@@ -13,6 +14,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		socket_users = users;
 		for(var i = 0; i < users.length; i++){
 			playerList[i] = users[i];
+			if (myId == 0){
+				myId = users[users.length -1].socketID;
+			}
 		}
 		console.log(socket_users);
 		for(var i = 0; i < socket_users.length; i++){
