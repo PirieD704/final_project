@@ -13,7 +13,7 @@
 Player = function (game, team, position, flag, game_id, id) {
 
     var red_position = [[960, 960]]
-    var blue_position = [[900, 900]]
+    var blue_position = [[10, 10]]
 
     // cursors = game.input.keyboard.createCursorKeys();
     this.cursor = {
