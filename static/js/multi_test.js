@@ -1,8 +1,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: updateAll, render:render });
-var myId = 1;
 
-var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, weapon, weapon2, cursors, fireButton, fireButton2, boost, land;
+var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
 var redTotal, blueTotal = 0;
 
 function preload() {
@@ -21,8 +20,11 @@ function preload() {
 function create() {
 
     playersPresent = {};
+    other_players = [];
 
 	land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
+
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
     flag.scale.setTo(0.35, 0.35);
@@ -38,16 +40,20 @@ function create() {
     for (i in playersPresent){
         if (playersPresent[i].unique_id == myId){
             console.log('i ran');
-            weapon = playersPresent[i].laser;
-            weapon2 = playersPresent[i].flare;
-            // console.log(this_player.player_shield)
-
             sprite = playersPresent[i].player;
-            shield = playersPresent[i].shield;
+            // shield = playersPresent[i].shield;
             player = playersPresent[i];
+        }else{
+            other_player = playersPresent[i]
+            other_players.push(other_player);
         }
     }
+    console.log(player)
+    console.log(other_players)
     console.log(sprite)
+    // weapon = player.laser;
+    // weapon2 = player.flare;
+    // console.log(this_player.player_shield)
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
@@ -79,35 +85,46 @@ function create() {
     // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
 
+    // other_cursors = game.input.keyboard.createCursorKeys();
+
     //camera follows players / center
     game.camera.follow(sprite);
 
 }
 
-function update() {
-    player.input.up = cursors.up.isDown;
-    player.input.left = cursors.left.isDown;
-    player.input.right = cursors.right.isDown;
-    player.input.laser = fireButton.isDown;
-    player.input.flare = fireButton2.isDown;
-    player.input.boost = boost.isDown;
+function updateLand() {
 
     land.tilePosition.x = -game.camera.x;
     land.tilePosition.y = -game.camera.y;
 
-    // for (var i in playersPresent)
-    // {
-    //     if (!playersPresent[i]) continue;
-    //     for (var j in playersPresent)
-    //     {
-    //         if (playersPresent[j].alive)
-    //         {
-    //             playersPresent[j].update();
-    //         }           
-    //     }
-    // }
+}
+
+function updateMe() {
     if(player.alive){
+        player.input.up = cursors.up.isDown;
+        player.input.down = cursors.down.isDown;
+        player.input.left = cursors.left.isDown;
+        player.input.right = cursors.right.isDown;
+        // player.input.laser = fireButton.isDown;
+        player.input.flare = fireButton2.isDown;
+        player.input.boost = boost.isDown;
         player.update();
+    }
+
+}
+
+//work in progress for tracking other people's movements.
+function updateOthers() {
+    for(i in other_players){
+        if(other_players[i].other_player.alive){
+            other_players[i].other_player
+            other_player.input.left = cursors.left.isDown;
+            other_player.input.right = cursors.right.isDown;
+            other_player.input.laser = fireButton.isDown;
+            other_player.input.flare = fireButton2.isDown;
+            other_player.input.boost = boost.isDown;
+            other_player.update();
+        }
     }
 
 }
@@ -130,24 +147,20 @@ function update() {
 //     flag.loadTexture('blueFlag', 0)
 // }
 
-// function ping(){
-//     for (i in playersPresent){
-//         if(playersPresent[i].alive){
-//             socket.emit('ping', {
-//                 id: myId,
-//                 playerX: playersPresent[i].player.position.x,
-//                 playerY: playersPresent[i].player.position.y,
-//                 shieldX: playersPresent[i].player_shield.position.x,
-//                 shieldY: playersPresent[i].player_shield.position.y
-//             });
-//         }
-//     }
-//     console.log('ping')
-// }
+function ping(){
+    console.log(player.player.position.x)
+    socket.emit('ping', {
+        id: myId,
+        playerX: player.player.position.x,
+        playerY: player.player.position.y,
+        message: 'i moved'
+    })
+}
 //put in controller
 function updateAll(){
-    update();
-    // ping();
+    updateLand();
+    updateMe();
+    ping();
 }
 
 

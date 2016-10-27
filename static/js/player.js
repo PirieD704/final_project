@@ -20,6 +20,7 @@ Player = function (game, team, position, flag, game_id, id) {
         left:false,
         right:false,
         up:false,
+        down:false,
         fire:false,
         boost: false
     }
@@ -28,6 +29,7 @@ Player = function (game, team, position, flag, game_id, id) {
         left:false,
         right:false,
         up:false,
+        down:false,
         fire:false,
         boost: false
     }
@@ -47,46 +49,99 @@ Player = function (game, team, position, flag, game_id, id) {
     this.player_id = game_id;
     this.unique_id = id;
     // this.team = team.team
-    this.player_shield = game.add.sprite(blue_position[position][0], blue_position[position][0], 'shield');
-    game.physics.enable(this.player, Phaser.Physics.ARCADE);
-    game.physics.enable(this.player_shield, Phaser.Physics.ARCADE);
-    this.player.body.drag.set(70);
-    this.player.body.maxVelocity.set(200);
-    this.player_shield.body.drag.set(70);
-    this.player_shield.body.maxVelocity.set(200);
+    // this.player_shield = game.add.sprite(blue_position[position][0], blue_position[position][0], 'shield');
+    game.physics.p2.enable(this.player);
+    // game.physics.p2.enable(this.player_shield);
+    // this.player.body.drag.set(70);
+    // this.player.body.maxVelocity.set(200);
+    // this.player_shield.body.drag.set(70);
+    // this.player_shield.body.maxVelocity.set(200);
     this.player.anchor.set(0.5, 0.5);
-    this.player_shield.anchor.set(0.45, 0.5);
+    // this.player_shield.anchor.set(0.45, 0.5);
     this.player.scale.setTo(0.35, 0.35);
+    // this.cursor = game.input.keyboard.createCursorKeys();
  
 };
 Player.prototype.update = function() {
     for (var i in this.input) this.cursor[i] = this.input[i];
+        this.player.body.setZeroVelocity();
+        if (this.cursor.up)
+        {
+            this.player.body.moveUp(300)
+        }
+        else if (this.cursor.down)
+        {
+            this.player.body.moveDown(300);
+        }
 
-    if (this.cursor.up)
-    {
-        game.physics.arcade.accelerationFromRotation(this.player.rotation, 300, this.player.body.acceleration);
-        game.physics.arcade.accelerationFromRotation(this.player_shield.rotation, 300, this.player_shield.body.acceleration);
-    }
-    else
-    {
-        this.player.body.acceleration.set(0);
-        this.player_shield.body.acceleration.set(0);
-    }
-    if (this.cursor.left)
-    {
-        this.player.body.angularVelocity = -300;
-        this.player_shield.body.angularVelocity = -300;
-    }
-    else if (this.cursor.right)
-    {
-        this.player.body.angularVelocity = 300;
-        this.player_shield.body.angularVelocity = 300;
-    }
-    else
-    {
-        this.player.body.angularVelocity = 0;
-        this.player_shield.body.angularVelocity = 0;
-    }
+        if (this.cursor.left)
+        {
+            this.player.body.moveLeft(300);
+        }
+        else if (this.cursor.right)
+        {
+            this.player.body.moveRight(300);
+        }
+
+    // if (this.cursor.fire || this.cursor.boost)
+    // {
+    //     this.player_shield.visible = false;
+    // }
+    // else
+    // {
+    //     this.player_shield.visible = true;
+    // }
+    // //the firing methods
+    // if (this.cursor.fire)
+    // {
+    //     weapon.fire();
+    // }
+    // else if (fireButton2.isDown)
+    // {
+    //     //this tells weapon2 to shoot at a specific Sprite, in this case, the flag
+    //     weapon2.fireAtSprite(flag);
+    // }
+    // //the boost adjustments
+    // if (boost.isDown)
+    // {
+    //     sprite.body.maxVelocity.set(600);
+    //     sprite.body.drag.set(0);
+    //     shield.body.maxVelocity.set(600);
+    //     shield.body.drag.set(0);
+    // }
+    // else
+    // {
+    //     sprite.body.maxVelocity.set(200);
+    //     sprite.body.drag.set(70);
+    //     shield.body.maxVelocity.set(200);
+    //     shield.body.drag.set(70);
+    // }
+
+    // if (this.cursor.up)
+    // {
+    //     game.physics.arcade.accelerationFromRotation(this.player.rotation, 300, this.player.body.acceleration);
+    //     game.physics.arcade.accelerationFromRotation(this.player_shield.rotation, 300, this.player_shield.body.acceleration);
+    // }
+    // else
+    // {
+    //     this.player.body.acceleration.set(0);
+    //     this.player_shield.body.acceleration.set(0);
+    // }
+    // if (this.cursor.left)
+    // {
+    //     this.player.body.angularVelocity = -300;
+    //     this.player_shield.body.angularVelocity = -300;
+    // }
+    // else if (this.cursor.right)
+    // {
+    //     this.player.body.angularVelocity = 300;
+    //     this.player_shield.body.angularVelocity = 300;
+    // }
+    // else
+    // {
+    //     this.player.body.angularVelocity = 0;
+    //     this.player_shield.body.angularVelocity = 0;
+    // }
 
     // if (this.cursors.up.isDown)
     // {
@@ -156,8 +211,8 @@ Player.prototype.update = function() {
     // {
     //     game.physics.arcade.velocityFromRotation(this.tank.rotation, 0, this.tank.body.velocity);
     // }    
-    this.player.rotation = game.physics.arcade.moveToPointer(this.player, 60, game.input.activePointer, 500);
-    this.player_shield.rotation = game.physics.arcade.moveToPointer(this.player_shield, 60, game.input.activePointer, 500);
+    // this.player.rotation = game.physics.arcade.moveToPointer(this.player, 60, game.input.activePointer, 500);
+    // this.player_shield.rotation = game.physics.arcade.moveToPointer(this.player_shield, 60, game.input.activePointer, 500);
     
     game.world.wrap(this.player, 16);
  
