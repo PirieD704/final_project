@@ -95,6 +95,16 @@ io.sockets.on('connect',function(socket){
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
 
+	socket.on('ping', function(data){
+		console.log(data.message);
+		io.sockets.emit('pong', {
+			id: data.id,
+			playerX: data.playerX,
+			playerY: data.playerY,
+			message: "update move"
+		})
+	})
+
 	socket.on('disconnect', function(){
 		console.log(socket.id + ' has disconnected');
 		for(var i = 0; i< users.length; i++){

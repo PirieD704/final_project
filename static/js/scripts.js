@@ -148,7 +148,7 @@ function create() {
 
     sprite.name = 'mainPlayer';
     flag.name = 'theFlag'
-    group = game.add.physicsGroup();
+    // group = game.add.physicsGroup();
 
 
     //  Tell it we don't want physics to manage the rotation

@@ -1,14 +1,21 @@
 // var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
+
+playerList = {};
+myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 
 	var apiPath = 'http://localhost:3000';
 	var socket_users = [];
 
-	socket.on('users', function(users, callback){
+	socket.on('users', function(users){
 		var blueTeam = [];
 		var redTeam = [];
-		socket_users = users;
-		console.log(socket_users);
+		for(var i = 0; i < users.length; i++){
+			playerList[i] = users[i];
+			if (myId == 0){
+				myId = users[users.length -1].socketID;
+			}
+		}
 		for(var i = 0; i < socket_users.length; i++){
 			if (socket_users[i].team === 'Blue'){
 				blueTeam.push(socket_users[i]);
@@ -22,6 +29,21 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		}
 		$scope.blueTeam = blueTeam;
 		$scope.redTeam = redTeam;
+	})
+	socket.on('pong', function(data){
+		for (i in playersPresent){
+			if (playersPresent[i].unique_id == data.id){
+				console.log(data.message);
+			}else{
+				console.log('yo')
+				// for(i in other_players){
+				// 	if(other_players[i].other_player.unique_id == data.id){
+				// 		other_players[i].other_player.position.x = data.playerX;
+				// 		other_players[i].other_player.position.y = data.playerY;
+				// 	}
+				// }
+			}
+		}
 	})
 
 	// registration page 
