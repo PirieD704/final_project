@@ -35,17 +35,17 @@ function create() {
         console.log('no players')
     }
     for (i in playersPresent){
-        if (playersPresent[i].player_id == i){
-            console.log('i ran');
+        if (playersPresent[i] == myId){
             weapon = playersPresent[i].laser;
             weapon2 = playersPresent[i].flare;
             // console.log(this_player.player_shield)
 
             sprite = playersPresent[i].player;
             shield = playersPresent[i].shield;
+            sprite.scale.setTo(0.35, 0.35);
         }
     }
-    console.log(sprite)
+    
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
