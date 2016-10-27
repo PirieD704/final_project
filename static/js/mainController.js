@@ -1,4 +1,7 @@
 // var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
+
+playerList = {};
+
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 
 	var apiPath = 'http://localhost:3000';
@@ -8,6 +11,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		var blueTeam = [];
 		var redTeam = [];
 		socket_users = users;
+		for(var i = 0; i < users.length; i++){
+			playerList[i] = users[i];
+		}
 		console.log(socket_users);
 		for(var i = 0; i < socket_users.length; i++){
 			if (socket_users[i].team === 'Blue'){

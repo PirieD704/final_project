@@ -10,7 +10,7 @@
 //     team: 'red'
 // }
 
-Player = function (game, team, position) {
+Player = function (game, team, position, flag, game_id, id) {
 
     var red_position = [[960, 960]]
     var blue_position = [[900, 900]]
@@ -37,14 +37,15 @@ Player = function (game, team, position) {
     // var x = 0;
     // var y = 0;
 
-    // this.game = game;
+    this.game = game;
     // this.health = 30;
     if(team === 'blue'){
         this.player = game.add.sprite(blue_position[position][0], blue_position[position][0], 'blue_player');
     }else{
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player');
     }
-    // this.player.id = id;
+    this.player_id = game_id;
+    this.unique_id = id;
     // this.team = team.team
     this.player_shield = game.add.sprite(blue_position[position][0], blue_position[position][0], 'shield');
     game.physics.enable(this.player, Phaser.Physics.ARCADE);
@@ -55,58 +56,7 @@ Player = function (game, team, position) {
     this.player_shield.body.maxVelocity.set(200);
     this.player.anchor.set(0.5, 0.5);
     this.player_shield.anchor.set(0.45, 0.5);
-
-    //player needs
-    // boost values
-    //weapons
-    //kill prototype function
-    //respawn
-    //team orientation
-
-
-
-
-    // //weapon one, particle
-    // this.weapon = game.add.group();
-    // this.weapon.enableBody = true;
-    // this.weapon.physicsBodyType = Phaser.Physics.ARCADE;
-    // this.weapon.createMultiple(80, 'particle', 0, false);
-    // this.weapon.setAll('anchor.x', 0.5);
-    // this.weapon.setAll('anchor.y', 0.5);
-    // this.weapon.setAll('outOfBoundsKill', true);
-    // this.weapon.setAll('checkWorldBounds', true);
-    // //weapon two, flare 
-    // this.weapon2 = game.add.group();
-    // this.weapon2.enableBody = true;
-    // this.weapon2.physicsBodyType = Phaser.Physics.ARCADE;
-    // this.weapon2.createMultiple(10, 'flare', 0, false);
-    // this.weapon2.setAll('anchor.x', 0.5);
-    // this.weapon2.setAll('anchor.y', 0.5);
-    // this.weapon2.setAll('outOfBoundsKill', true);
-    // this.weapon2.setAll('checkWorldBounds', true);  
-
-    // this.currentSpeed = 0;
-    // this.fireRate = 500;
-    // this.nextFire = 0;
-    // this.alive = true;
-
-    // this.shadow = game.add.sprite(x, y, 'enemy', 'shadow');
-    // this.tank = game.add.sprite(x, y, 'enemy', 'tank1');
-    // this.turret = game.add.sprite(x, y, 'enemy', 'turret');
-
-    // this.shadow.anchor.set(0.5);
-    // this.tank.anchor.set(0.5);
-    // this.turret.anchor.set(0.3, 0.5);
-
-    // this.tank.id = index;
-    // game.physics.enable(this.tank, Phaser.Physics.ARCADE);
-    // this.tank.body.immovable = false;
-    // this.tank.body.collideWorldBounds = true;
-    // this.tank.body.bounce.setTo(0, 0);
- 
-    // this.tank.angle = 0;
-
-    // game.physics.arcade.velocityFromRotation(this.tank.rotation, 0, this.tank.body.velocity);
+    this.player.scale.setTo(0.35, 0.35);
  
 };
 Player.prototype.update = function() {

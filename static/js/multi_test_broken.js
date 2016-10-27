@@ -46,15 +46,6 @@ function create() {
         }
     }
     
-    // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
-    
-
-    // weapon = this_player.laser;
-    // weapon2 = this_player.flare;
-    // // console.log(this_player.player_shield)
-
-    // sprite = this_player.player;
-    // shield = this_player.shield;
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
