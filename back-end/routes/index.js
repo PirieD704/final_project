@@ -86,6 +86,9 @@ io.sockets.on('connect',function(socket){
 		username: 'Anonymous',
 		team: ''
 	});
+	
+	//don't assign a team to users until they enter the lobby, this way, no matter the order users on the home page enter
+	//they'll still be assigned to the right team and there won't be two people on one team and no people on the other
 	socket.on('enter_lobby', function(data){
 		for(var i = 0; i < users.length; i++){
 			if(users[i].socketID == data.id){
@@ -95,17 +98,16 @@ io.sockets.on('connect',function(socket){
 				}else{
 					users[i].team = 'Blue'
 				}
-				console.log(users[i].username + " has been assigned to team " + users[i].team)
 			}
+			console.log(users[i].username + " has been assigned to team " + users[i].team)
 		}
-		io.sockets.emit('lobby_list_update', {
-			// id:socketID,
-			// message: 'the lobby list has been updated'
-		});
+		io.sockets.emit('lobby_list_update', users);
+		console.log( 'the lobby list has been updated');
+		console.log(users);
 	})
-	//change users to game_players. this will check who wants to play a game, and then assigns them a team based on the players in the waiting room.
-	//this prevents people just looking at the site from being assigned a team and ruining our system. they would be jerks.
 	
+
+
 	console.log(users)
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);

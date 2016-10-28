@@ -13,24 +13,26 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 
 	socket.on('users', function(users){
 		playerList = users;
-		//moves to lobby enter
+	})
+
+	socket.on('lobby_list_update', function(users){
 		var blueTeam = [];
 		var redTeam = [];
 		for(var i = 0; i < users.length; i++){
 			if (users[i].team === 'Blue'){
 				blueTeam.push(users[i]);
-				console.log('blue team-------------',blueTeam)
 			}else if (users[i].team === 'Red'){
 				redTeam.push(users[i]);
-				console.log(redTeam)
 			}else{
 				console.log('error - no team');
 			}
 		}
 		$scope.blueTeam = blueTeam;
 		$scope.redTeam = redTeam;
-		//end move to enter lobby
+		socket.emit('lobby_teams', users);
+			console.log('teams are updated');
 	})
+
 	socket.on('pong', function(data){
 		if(data.id != myId){
 			// It's not me who ponged. Move this guy.
@@ -203,8 +205,10 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			id: myId,
 			player: lobbyPlayer
 		});
-		console.log('someone is entering the lobby')
+		console.log('someone is entering the lobby');
 	}
+	
+		
 
 
 	//==================================================
