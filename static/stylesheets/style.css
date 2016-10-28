@@ -1,6 +1,6 @@
 @font-face {
 	font-family: 'SF Outer Limits Upright', 'Space Age';
-	src:  url('SFOuterLimitsUpright.ttf', 'space-age.regular.ttf');
+	src: url('SFOuterLimitsUpright.ttf', 'space-age.regular.ttf');
 
 }
 body {
@@ -51,6 +51,22 @@ h3{
 
 .list-group li{
 	font-size: 16px;
+}
+
+.modal-content{
+	color: black;
+}
+
+.modal-body p{
+	font-size: 16px;
+}
+
+.modal-header, .game-title{
+	font-size: 20px;
+}
+
+.start-game-button{
+	text-align: center;
 }
 
 .main-display{

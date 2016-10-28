@@ -28,4 +28,40 @@
 			</div>
 		</div>  
 	</div>
+
+	<div class='row start-button'>
+		<div class="start-game-button col-sm-10 col-sm-offset-1">
+	        <button type="button" class="btn btn-success" data-dismiss="modal" ng-show='gameReady' ng-click="start_game()">Launch Game</button>
+	  	</div>
+	  </div>	
+
+	<!-- tutorial modal -->
+	<div class="modal fade" id="tutorialModal" tabindex="-1">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4>Welcome to Space Balls!</h4>
+				</div>
+				<div class="modal-body">
+					<p>
+						<span class='game-title'>Game Controls:</span> 
+						<br>- Use the keypad to guide your orb.
+						<br>- Press the 'space bar' to shoot lasers, but be careful - when you fire lasers your shield is down. Get hit too many times and you die and start over.
+						<br>- Press the 'f' key to fire a flare and locate the star.
+						<br>- Press the 'shift' key to boost your orb and travel faster. 
+					</p>
+					<p>
+						<span class='game-title'>How to Win:</span>
+						<br>- Hit the star to change it to your team's color.
+						<br>- Defend the star from the other team, to prevent them changing it to their color.
+						<br>- Whatever color the star is when the timer runs out, that team wins the round!
+						<br>- There may be other ways to win too - you'll have to play to find out!
+					</p>
+				</div>
+				<div class="modal-footer">
+			        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="tutorialDone()">Let's Get Started</button>
+		      	</div>
+			</div>
+		</div>
+	</div>
 </div>			
