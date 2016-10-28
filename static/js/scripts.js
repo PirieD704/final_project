@@ -25,7 +25,7 @@ The final parameter is an object containing four references to Phasers essential
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: update, render:render });
 
 
-var circle, sprite, weapon, cursors, fireButton;
+var circle, sprite, weapon, cursors, fireButton, blueTeam, redTeam, flagGroup, myTeam;
 
 function preload() {
 
@@ -36,7 +36,7 @@ function preload() {
     game.load.image('flag', '/static/images/flag_orb_unclaimed.png');
     game.load.image('blueFlag', '/static/images/flag_orb_blue.png');
     game.load.image('redFlag', '/static/images/flag_orb_red.png');
-    game.load.image('shield', '/static/images/shield_final_project.png');
+    game.load.image('shield', '/static/images/shield_fp.png');
 
 }
 
@@ -44,11 +44,28 @@ function create() {
 
 	game.add.tileSprite(0, 0, 1920, 1920, 'background');
     //  Creates 30 bullets, using the 'bullet' graphic
-    weapon = game.add.weapon(30, 'particle');
-    weapon2 = game.add.weapon(1, 'flare');
+    // You can set the bullet limit to -1 if you don't want to worry about the size of the array, but be careful bc it will never decrease the size of the array once grown
+    weapon = game.add.weapon(300, 'particle');
+    weapon2 = game.add.weapon(10, 'flare');
     // weapon2.scale.setTo(0.35, 0.35);
 
-
+    // if(myTeam === 'Blue'){
+    //     blueBullets = game.add.group();
+    //     blueBullets.enableBody = true;
+    //     blueBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    //     blueBullets.createMultiple(30, 'particle');
+    //     // blueBullets.trackSprite(sprite, 0, 0, true);
+    //     blueBullets.setAll('outOfBoundsKill', true);
+    //     blueBullets.setAll('checkWorldBounds', true);
+    // }else if(myTeam === 'red'){
+    //     redBullets = game.add.group();
+    //     redBullets.enableBody = true;
+    //     redBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    //     redBullets.createMultiple(30, 'particle');
+    //     // blueBullets.trackSprite(sprite, 0, 0, true);
+    //     redBullets.setAll('outOfBoundsKill', true);
+    //     redBullets.setAll('checkWorldBounds', true);
+    // }
     //  The bullets will be automatically killed when they are 2000ms old
     weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     weapon.bulletLifespan = 2000;
@@ -177,6 +194,8 @@ function update() {
 
     // this to check the overlap of two items
     game.physics.arcade.overlap(blueTeam, flagGroup, collisionHandler, null, this);
+    game.physics.arcade.overlap(blueTeam, flagGroup, collisionHandler, null, this);
+
 
 
     //handles the shield disappearing when boost or shooting is initiated
@@ -191,7 +210,7 @@ function update() {
     //the firing methods
     if (fireButton.isDown)
     {
-        weapon.fire();
+        weapon.fire()
     }
     else if (fireButton2.isDown)
     {
@@ -251,6 +270,10 @@ function update() {
 function collisionHandler(){
     console.log("collision!")
     flag.loadTexture('blueFlag', 0)
+}
+
+function blueBulletsFire(){
+
 }
 
 function render() {
