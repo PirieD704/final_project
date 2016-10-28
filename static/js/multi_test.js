@@ -31,7 +31,7 @@ function create() {
     console.log(playerList);
     if (playerList.length != 0){
         for (i in playerList){
-            playersPresent[i] = new Player(game, 'blue', 0, flag, i, playerList[i].socketID);
+            playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
             // myId = playerList[i].socketID;
             // console.log(myId)
         }
