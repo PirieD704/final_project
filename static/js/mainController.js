@@ -133,8 +133,8 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$rootScope.loggedIn = true;
 					$('.navbar-text').text('Signed in as ' + $scope.username);
 					$timeout(function(){
-						$location.path('/lobby');
 						updateLobbyCount();
+						$location.path('/lobby');
 					}, 1500);
 					setTimeout(tutorialModal, 1600);
 				}
@@ -160,8 +160,8 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				$rootScope.loggedIn = true;
 				$('.navbar-text').text('Signed in as ' + $scope.username);
 				$timeout(function(){
-					$location.path('/lobby');
 					updateLobbyCount();
+					$location.path('/lobby');
 				}, 1500);
 			}else if(response.data.failure == 'noUser'){
 				$scope.notFound = true;

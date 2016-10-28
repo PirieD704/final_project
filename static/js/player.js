@@ -12,8 +12,16 @@
 
 Player = function (game, team, position, flag, game_id, id) {
 
-    var red_position = [[960, 960]]
-    var blue_position = [[10, 10]]
+    var r_position1 = [200, 200],
+    r_position2 = [200, 450],
+    r_position3 = [200, 700],
+    r_position3 = [200, 950],
+    b_position1 = [1720, 200],
+    b_position2 = [1720, 450],
+    b_position3 = [1720, 700],
+    b_position3 = [1720, 950];
+    var red_position = [r_position1, r_position2, r_position3]
+    var blue_position = [b_position1, b_position2, b_position3]
 
     // cursors = game.input.keyboard.createCursorKeys();
     this.cursor = {
@@ -35,14 +43,9 @@ Player = function (game, team, position, flag, game_id, id) {
     }
 
     this.alive = true;
-
-    // var x = 0;
-    // var y = 0;
-
     this.game = game;
-    // this.health = 30;
-    if(team === 'blue'){
-        this.player = game.add.sprite(blue_position[position][0], blue_position[position][0], 'blue_player');
+    if(team === 'Blue'){
+        this.player = game.add.sprite(blue_position[position][0], blue_position[position][1], 'blue_player');
         console.log("Drawing a blue guy")
     }else{
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player');
