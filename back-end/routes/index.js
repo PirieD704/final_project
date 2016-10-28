@@ -58,7 +58,7 @@ router.post('/login', function(req, res, next){
 			}else{
 				var loginResult = bcrypt.compareSync(req.body.password, document.password);
 				if(loginResult){
-					Account.update({username: document.username}).exec();
+					Account.update({username: document.username, password: document.password}).exec();
 					res.json({success:'userFound', username: document.username,});
 					loggedIn = true;
 				}else{
@@ -75,6 +75,7 @@ router.post('/login', function(req, res, next){
 
 var socketIo = require('socket.io');
 var users = [];
+var lobby_users = 0;
 var game_players = [];
 var sockets = [];
 
@@ -85,13 +86,26 @@ io.sockets.on('connect',function(socket){
 		username: 'Anonymous',
 		team: ''
 	});
+	socket.on('enter_lobby', function(data){
+		for(var i = 0; i < users.length; i++){
+			if(users[i].socketID == data.id){
+				lobby_users++;
+				if (lobby_users % 2 === 0){
+					users[i].team = 'Red'
+				}else{
+					users[i].team = 'Blue'
+				}
+				console.log(users[i].username + " has been assigned to team " + users[i].team)
+			}
+		}
+		io.sockets.emit('lobby_list_update', {
+			// id:socketID,
+			// message: 'the lobby list has been updated'
+		});
+	})
 	//change users to game_players. this will check who wants to play a game, and then assigns them a team based on the players in the waiting room.
 	//this prevents people just looking at the site from being assigned a team and ruining our system. they would be jerks.
-	if (users.length % 2 === 0){
-		users[users.length -1].team = 'Red'
-	}else{
-		users[users.length -1].team = 'Blue'
-	}
+	
 	console.log(users)
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
