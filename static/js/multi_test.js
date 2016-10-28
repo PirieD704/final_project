@@ -87,6 +87,8 @@ function create() {
     game.world.setBounds(0, 0, 1920, 1920);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
+    game.stage.disableVisibilityChange = false;
+
     // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
 
