@@ -102,8 +102,7 @@ io.sockets.on('connect',function(socket){
 			console.log(users[i].username + " has been assigned to team " + users[i].team)
 		}
 		io.sockets.emit('lobby_list_update', users);
-		console.log( 'the lobby list has been updated');
-		console.log(users);
+			console.log('the lobby list has been updated');
 	})
 	
 
@@ -112,6 +111,17 @@ io.sockets.on('connect',function(socket){
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
 
+	socket.on('init_game', function(data){
+		console.log(data.num_ready, users.length);
+		if(data.num_ready == users.length){
+			console.log("users are ready");
+			io.sockets.emit('game_launch', users);
+				console.log('game launching');
+		}else{
+			io.sockets.emit('player_ready', data.num_ready);
+				console.log('no launch yet');	
+		}
+	})
 	// FINISH THIS 
 	// io.sockets.on('start_game'){
 	// 	sockets.emit('start_game', {playerTotal: 10})
