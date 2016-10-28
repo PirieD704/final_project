@@ -31,7 +31,7 @@ function create() {
     console.log(playerList);
     if (playerList.length != 0){
         for (i in playerList){
-            playersPresent[i] = new Player(game, 'blue', 0, flag, i, playerList[i].socketID);
+            playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
             // myId = playerList[i].socketID;
             // console.log(myId)
         }
@@ -87,6 +87,8 @@ function create() {
     game.world.setBounds(0, 0, 1920, 1920);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
+    game.stage.disableVisibilityChange = false;
+
     // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
 
