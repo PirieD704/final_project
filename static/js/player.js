@@ -43,6 +43,7 @@ Player = function (game, team, position, flag, game_id, id) {
     // this.health = 30;
     if(team === 'blue'){
         this.player = game.add.sprite(blue_position[position][0], blue_position[position][0], 'blue_player');
+        console.log("Drawing a blue guy")
     }else{
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player');
     }
@@ -50,7 +51,11 @@ Player = function (game, team, position, flag, game_id, id) {
     this.unique_id = id;
     // this.team = team.team
     // this.player_shield = game.add.sprite(blue_position[position][0], blue_position[position][0], 'shield');
+    
+
     game.physics.p2.enable(this.player);
+    
+
     // game.physics.p2.enable(this.player_shield);
     // this.player.body.drag.set(70);
     // this.player.body.maxVelocity.set(200);
@@ -62,158 +67,46 @@ Player = function (game, team, position, flag, game_id, id) {
     // this.cursor = game.input.keyboard.createCursorKeys();
  
 };
-Player.prototype.update = function() {
-    for (var i in this.input) this.cursor[i] = this.input[i];
-        this.player.body.setZeroVelocity();
-        if (this.cursor.up)
-        {
-            this.player.body.moveUp(300)
+Player.prototype.update = function(who) {
+    //it's me
+    if(who == 'me'){
+        // this.game.physics.arcade.moveToXY(this, this.x, this.y)
+        for (var i in this.input) this.cursor[i] = this.input[i];
+            this.player.body.setZeroVelocity();
+            if (this.cursor.up)
+            {
+                this.player.body.moveUp(300)
+            }
+            else if (this.cursor.down)
+            {
+                this.player.body.moveDown(300);
+            }
+
+            if (this.cursor.left)
+            {
+                this.player.body.moveLeft(300);
+            }
+            else if (this.cursor.right)
+            {
+                this.player.body.moveRight(300);
+            }
+        }else{
+            // its NOT me
+            // this.player.body.setZeroVelocity();
+            // console.log(this.player.body);
+            if(this.x !== undefined){
+                this.player.body.reset(this.x, this.y)
+            }
+            // this.game.physics.arcade.moveToXY(this.player, this.x, this.y)
         }
-        else if (this.cursor.down)
-        {
-            this.player.body.moveDown(300);
-        }
-
-        if (this.cursor.left)
-        {
-            this.player.body.moveLeft(300);
-        }
-        else if (this.cursor.right)
-        {
-            this.player.body.moveRight(300);
-        }
-
-    // if (this.cursor.fire || this.cursor.boost)
-    // {
-    //     this.player_shield.visible = false;
-    // }
-    // else
-    // {
-    //     this.player_shield.visible = true;
-    // }
-    // //the firing methods
-    // if (this.cursor.fire)
-    // {
-    //     weapon.fire();
-    // }
-    // else if (fireButton2.isDown)
-    // {
-    //     //this tells weapon2 to shoot at a specific Sprite, in this case, the flag
-    //     weapon2.fireAtSprite(flag);
-    // }
-    // //the boost adjustments
-    // if (boost.isDown)
-    // {
-    //     sprite.body.maxVelocity.set(600);
-    //     sprite.body.drag.set(0);
-    //     shield.body.maxVelocity.set(600);
-    //     shield.body.drag.set(0);
-    // }
-    // else
-    // {
-    //     sprite.body.maxVelocity.set(200);
-    //     sprite.body.drag.set(70);
-    //     shield.body.maxVelocity.set(200);
-    //     shield.body.drag.set(70);
-    // }
-
-    // if (this.cursor.up)
-    // {
-    //     game.physics.arcade.accelerationFromRotation(this.player.rotation, 300, this.player.body.acceleration);
-    //     game.physics.arcade.accelerationFromRotation(this.player_shield.rotation, 300, this.player_shield.body.acceleration);
-    // }
-    // else
-    // {
-    //     this.player.body.acceleration.set(0);
-    //     this.player_shield.body.acceleration.set(0);
-    // }
-    // if (this.cursor.left)
-    // {
-    //     this.player.body.angularVelocity = -300;
-    //     this.player_shield.body.angularVelocity = -300;
-    // }
-    // else if (this.cursor.right)
-    // {
-    //     this.player.body.angularVelocity = 300;
-    //     this.player_shield.body.angularVelocity = 300;
-    // }
-    // else
-    // {
-    //     this.player.body.angularVelocity = 0;
-    //     this.player_shield.body.angularVelocity = 0;
-    // }
-
-    // if (this.cursors.up.isDown)
-    // {
-    //     game.physics.arcade.accelerationFromRotation(this.player.rotation, 300, sprite.body.acceleration);
-    //     game.physics.arcade.accelerationFromRotation(this.shield.rotation, 300, shield.body.acceleration);
-    // }
-    // else
-    // {
-    //     this.player.body.acceleration.set(0);
-    //     this.shield.body.acceleration.set(0);
-    // }
-    // if (this.cursors.left.isDown)
-    // {
-    //     this.player.body.angularVelocity = -300;
-    //     this.shield.body.angularVelocity = -300;
-    // }
-    // else if (this.cursors.right.isDown)
-    // {
-    //     this.player.body.angularVelocity = 300;
-    //     this.shield.body.angularVelocity = 300;
-    // }
-    // else
-    // {
-    //     this.player.body.angularVelocity = 0;
-    //     this.shield.body.angularVelocity = 0;
-    // }
-
-    // this.player.rotation = game.physics.arcade.moveToPointer(this.player, 60, game.input.activePointer, 500);
-    // this.shield.rotation = game.physics.arcade.moveToPointer(this.shield, 60, game.input.activePointer, 500);
-        
-    // for (var i in this.input) this.cursor[i] = this.input[i];    
-    
-    
-    
-    // if (this.cursor.left)
-    // {
-    //     this.tank.angle -= 1;
-    // }
-    // else if (this.cursor.right)
-    // {
-    //     this.tank.angle += 1;
-    // }    
-    // if (this.cursor.up)
-    // {
-    //     //  The speed we'll travel at
-    //     this.currentSpeed = 300;
-    // }
-    // else
-    // {
-    //     if (this.currentSpeed > 0)
-    //     {
-    //         this.currentSpeed -= 4;
-    //     }
-    // }
-    // if (this.cursor.fire)
-    // {    
-    //     this.fire({x:this.cursor.tx, y:this.cursor.ty});
-    // }
-    
-    
-    
-    // if (this.currentSpeed > 0)
-    // {
-    //     game.physics.arcade.velocityFromRotation(this.tank.rotation, this.currentSpeed, this.tank.body.velocity);
-    // }    
-    // else
-    // {
-    //     game.physics.arcade.velocityFromRotation(this.tank.rotation, 0, this.tank.body.velocity);
-    // }    
-    // this.player.rotation = game.physics.arcade.moveToPointer(this.player, 60, game.input.activePointer, 500);
-    // this.player_shield.rotation = game.physics.arcade.moveToPointer(this.player_shield, 60, game.input.activePointer, 500);
-    
+    // console.log(this)
+    // this.game.physics.arcade.moveToXY(this.player, this.x, this.y)
+    // console.log("huh")
+    // this.game.physics.arcade.moveToXY(
+    //                 this.player, //sprite reference 
+    //                 this.player.body.x + 150, // target x position
+    //                 Phaser.Math.snapTo(this.player.body.y, 70), 100 
+    //             );                
     game.world.wrap(this.player, 16);
  
 };
