@@ -1,8 +1,7 @@
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: update, render:render });
-var myId = 0;
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: updateAll, render:render });
 
-var sprite, blueTeamList, redTeamList, blueBulletList, redBullletList, weapon, weapon2, cursors, fireButton, fireButton2, boost;
+var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
 var redTotal, blueTotal = 0;
 
 function preload() {
@@ -10,172 +9,168 @@ function preload() {
 	game.load.image('background', '/static/images/background.png');
 	game.load.image('particle', '/static/images/green_particle.png');
     game.load.image('flare', '/static/images/flare.png');
+    game.load.image('red_player', '/static/images/red_orb.png');
+    game.load.image('blue_player', '/static/images/blue_orb.png');
     game.load.image('player', '/static/images/player_1.png');
     game.load.image('flag', '/static/images/unclaimed_flag.png');
-    game.load.atlas('shield', '/static/images/shield_final_project.png');
+    game.load.image('shield', '/static/images/shield_fp.png');
 
 }
 
 function create() {
+    console.log("Creating...")
+    playersPresent = {};
+    other_players = [];
 
-	game.add.tileSprite(0, 0, 1920, 1920, 'background');
-    //  Creates 30 bullets, using the 'bullet' graphic
-    weapon = game.add.weapon(30, 'particle');
-    weapon2 = game.add.weapon(1, 'flare');
-    // weapon2.scale.setTo(0.35, 0.35);
+	land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
 
-    blueTeamList, redTeamList = {};
-    player = new Player(myId, game, sprite);
-    sprite = player.sprite;
-    weapon = player.weapon;
-    weapon2 = player.weapon2;
+    game.physics.startSystem(Phaser.Physics.P2JS);
 
-
-    //  The bullets will be automatically killed when they are 2000ms old
-    weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-    weapon.bulletLifespan = 2000;
-    weapon2.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-    weapon2.bulletLifespan = 1200;
-
-    //  The speed at which the bullet is fired
-    weapon.bulletSpeed = 700;
-    weapon2.bulletSpeed = 300;
-
-    //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-    weapon.fireRate = 300;
-    weapon2.fireRate = 300;
-
-    //  Wrap bullets around the world bounds to the opposite side
-    // weapon.bulletWorldWrap = true;
-    player_orb = this.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    this_player = new Player(myId, game, player_orb)
-    sprite = this_player.player
-    shield = game.add.sprite(game.world.centerX, game.world.centerY, 'shield');
-    // flag = game.add.sprite(game.world.centerX, game.world.centerY, 'flag');
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
     flag.scale.setTo(0.35, 0.35);
-    sprite.scale.setTo(0.35, 0.35);
+    console.log(playerList);
+    if (playerList.length != 0){
+        for (i in playerList){
+            playersPresent[i] = new Player(game, 'blue', 0, flag, i, playerList[i].socketID);
+            // myId = playerList[i].socketID;
+            // console.log(myId)
+        }
+        // console.log(playersPresent);
+    }else{
+        console.log('no players')
+    }
 
-    sprite.anchor.set(0.5);
-    shield.anchor.set(0.5);
-
-    game.physics.arcade.enable(sprite);
-    game.physics.arcade.enable(shield);
-
-    sprite.body.drag.set(70);
-    sprite.body.maxVelocity.set(200);
-    shield.body.drag.set(70);
-    shield.body.maxVelocity.set(200);
-
-    //  Tell the Weapon to track the 'player' Sprite
-    //  With no offsets from the position
-    //  But the 'true' argument tells the weapon to track sprite rotation
-    weapon.trackSprite(sprite, 0, 0, true);
-    weapon2.trackSprite(sprite, 0, 0, true);
-
-    cursors = this.input.keyboard.createCursorKeys();
+    for (i in playersPresent){
+        console.log(playersPresent[i].unique_id, myId)
+        if (playersPresent[i].unique_id == myId){
+            console.log('i ran');
+            sprite = playersPresent[i].player;
+            // shield = playersPresent[i].shield;
+            player = playersPresent[i];
+        }else{
+            other_player = playersPresent[i]
+            other_players.push(other_player);
+        }
+    }
+    // console.log(player)
+    // console.log(other_players)
+    // console.log(sprite)
+    // console.log(playersPresent);
+    // weapon = player.laser;
+    // weapon2 = player.flare;
+    // console.log(this_player.player_shield)
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
     boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
-    //
-	//cursor follow arrow
-	//
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    // sprite.anchor.set(0.5);
+    // shield.anchor.set(0.5);
 
-    game.stage.backgroundColor = '#0072bc';
+    // creat our team and flag groups
+    // blueTeam = game.add.group();
+    // blueTeam.enableBody = true;
+    // blueTeam.physicsBodyType = Phaser.Physics.ARCADE;
+    // redTeam = game.add.group();
+    // redTeam.enableBody = true;
+    // redTeam.physicsBodyType = Phaser.Physics.ARCADE;
+    flagGroup = game.add.group();
+    flagGroup.enableBody = true;
+    flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-    // sprite = game.add.sprite(400, 300, 'arrow');
-    sprite.anchor.setTo(0.5, 0.5);
-    shield.anchor.setTo(0.45, 0.5);
+    // add sprite to a team
+    // blueTeam.add(sprite);
 
-    //  Enable Arcade Physics for the sprite
-    game.physics.enable(sprite, Phaser.Physics.ARCADE);
-    game.physics.enable(shield, Phaser.Physics.ARCADE);
-
-    //  Tell it we don't want physics to manage the rotation
-    // sprite.body.allowRotation = false;
-
-    //camera follows players / center
+    // add flag to flag group
+    flagGroup.add(flag);
 
     game.world.setBounds(0, 0, 1920, 1920);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
-    game.physics.p2.enable(sprite);
+    // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
+
+    // other_cursors = game.input.keyboard.createCursorKeys();
+
+    //camera follows players / center
     game.camera.follow(sprite);
 
 }
 
-function update() {
-    //handles the shield disappearing when boost or shooting is initiated
-    if (fireButton.isDown || boost.isDown)
-    {
-        shield.visible = false;
-    }
-    else
-    {
-        shield.visible = true;
-    }
-    //the firing methods
-    if (fireButton.isDown)
-    {
-        weapon.fire();
-    }
-    else if (fireButton2.isDown)
-    {
-        //this tells weapon2 to shoot at a specific Sprite, in this case, the flag
-        weapon2.fireAtSprite(flag);
-    }
-    //the boost adjustments
-    if (boost.isDown)
-    {
-        sprite.body.maxVelocity.set(600);
-        sprite.body.drag.set(0);
-        shield.body.maxVelocity.set(600);
-        shield.body.drag.set(0);
-    }
-    else
-    {
-        sprite.body.maxVelocity.set(200);
-        sprite.body.drag.set(70);
-        shield.body.maxVelocity.set(200);
-        shield.body.drag.set(70);
-    }
-    if (cursors.up.isDown)
-    {
-        game.physics.arcade.accelerationFromRotation(sprite.rotation, 300, sprite.body.acceleration);
-        game.physics.arcade.accelerationFromRotation(shield.rotation, 300, shield.body.acceleration);
-    }
-    else
-    {
-        sprite.body.acceleration.set(0);
-        shield.body.acceleration.set(0);
-    }
-    if (cursors.left.isDown)
-    {
-        sprite.body.angularVelocity = -300;
-        shield.body.angularVelocity = -300;
-    }
-    else if (cursors.right.isDown)
-    {
-        sprite.body.angularVelocity = 300;
-        shield.body.angularVelocity = 300;
-    }
-    else
-    {
-        sprite.body.angularVelocity = 0;
-        shield.body.angularVelocity = 0;
-    }
-    
+function updateLand() {
 
-    game.world.wrap(sprite, 16);
-
-    sprite.rotation = game.physics.arcade.moveToPointer(sprite, 60, game.input.activePointer, 500);
-    shield.rotation = game.physics.arcade.moveToPointer(shield, 60, game.input.activePointer, 500);
+    land.tilePosition.x = -game.camera.x;
+    land.tilePosition.y = -game.camera.y;
 
 }
+
+function updateMe() {
+    if(player.alive){
+        player.input.up = cursors.up.isDown;
+        player.input.down = cursors.down.isDown;
+        player.input.left = cursors.left.isDown;
+        player.input.right = cursors.right.isDown;
+        // player.input.laser = fireButton.isDown;
+        player.input.flare = fireButton2.isDown;
+        player.input.boost = boost.isDown;
+        player.update('me');
+        for(i in other_players){
+            other_players[i].update('other');
+        }
+    }
+
+}
+
+//work in progress for tracking other people's movements.
+// function updateOthers() {
+//     for(i in other_players){
+//         if(other_players[i].other_player.alive){
+//             moveToXY(other_players[i].other_player,)
+//             // other_players[i].other_player
+//             other_player.input.left = cursors.left.isDown;
+//             other_player.input.right = cursors.right.isDown;
+//             other_player.input.laser = fireButton.isDown;
+//             other_player.input.flare = fireButton2.isDown;
+//             other_player.input.boost = boost.isDown;
+//             other_player.update();
+//         }
+//     }
+// }
+
+// socket.on("pong", function(data){
+    // console.log(data)
+    // for(i in playersPresent)
+    //     if(playersPresent[i].alive){
+    //         if(playersPresent[i].id == myId){
+    //             playersPresent[i].player.position.x = data.playerX;
+    //             playersPresent[i].player.position.y = data.playerY;
+    //             playersPresent[i].player_shield.position.x = data.shieldX;
+    //             playersPresent[i].player_shield.position.y = data.shieldY;              
+    //         }
+    //     }
+// });
+
+// our callback for when a collision is made
+// function collisionHandler(){
+//     console.log("collision!")
+//     flag.loadTexture('blueFlag', 0)
+// }
+
+function ping(){
+    // console.log(player.player.position.x)
+    socket.emit('ping', {
+        id: myId,
+        playerX: player.player.position.x,
+        playerY: player.player.position.y
+    })
+}
+//put in controller
+function updateAll(){
+    updateLand();
+    updateMe();
+    ping();
+}
+
 
 function render() {
 

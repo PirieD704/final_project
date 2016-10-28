@@ -1,20 +1,26 @@
 // var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies'])
+
+playerList = [];
+var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 
 	var apiPath = 'http://localhost:3000';
-	var socket_users = [];
 
-	socket.on('users', function(users, callback){
+	socket.on('player_init', function(socket_id){
+		console.log("Welcome, fool", socket_id);
+		myId = socket_id;
+	});
+
+	socket.on('users', function(users){
 		var blueTeam = [];
 		var redTeam = [];
-		socket_users = users;
-		console.log(socket_users);
-		for(var i = 0; i < socket_users.length; i++){
-			if (socket_users[i].team === 'Blue'){
-				blueTeam.push(socket_users[i]);
-				console.log(blueTeam)
-			}else if (socket_users[i].team === 'Red'){
-				redTeam.push(socket_users[i]);
+		playerList = users;
+		for(var i = 0; i < users.length; i++){
+			if (users[i].team === 'Blue'){
+				blueTeam.push(users[i]);
+				console.log('blue team-------------',blueTeam)
+			}else if (users[i].team === 'Red'){
+				redTeam.push(users[i]);
 				console.log(redTeam)
 			}else{
 				console.log('error - no team');
@@ -22,6 +28,41 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		}
 		$scope.blueTeam = blueTeam;
 		$scope.redTeam = redTeam;
+	})
+	socket.on('pong', function(data){
+		if(data.id != myId){
+			// It's not me who ponged. Move this guy.
+			// console.log(data)
+			// console.log(playersPresent)
+			for (var i in playersPresent){
+				// console.log(playersPresent[key])
+				if(playersPresent[i].unique_id == data.id){
+					var guyWhoJustPongedAndNotMe = playersPresent[i];
+					// console.log(guyWhoJustPongedAndNotMe.player.x);
+					// guyWhoJustPongedAndNotMe.y = data.playerY
+					guyWhoJustPongedAndNotMe.player.position.x = data.playerX
+					guyWhoJustPongedAndNotMe.player.position.y = data.playerY
+
+
+					// console.log(guyWhoJustPongedAndNotMe)
+					// guyWhoJustPongedAndNotMe.player.
+					// sprite.body.moveTo(2000, 300, Phaser.ANGLE_RIGHT);
+				}
+			}
+		}
+		// for (i in playersPresent){
+		// 	if (playersPresent[i].unique_id == data.id){
+		// 		console.log(data.message);
+		// 	}else{
+		// 		console.log('yo')
+				// for(i in other_players){
+				// 	if(other_players[i].other_player.unique_id == data.id){
+				// 		other_players[i].other_player.position.x = data.playerX;
+				// 		other_players[i].other_player.position.y = data.playerY;
+				// 	}
+				// }
+		// 	}
+		// }
 	})
 
 	// registration page 

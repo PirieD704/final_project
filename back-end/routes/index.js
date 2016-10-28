@@ -76,9 +76,10 @@ router.post('/login', function(req, res, next){
 var socketIo = require('socket.io');
 var users = [];
 var game_players = [];
+var sockets = [];
 
 io.sockets.on('connect',function(socket){
-	console.log(socket.id);
+	socket.emit('player_init', socket.id);
 	users.push({
 		socketID: socket.id,
 		username: 'Anonymous',
@@ -94,6 +95,21 @@ io.sockets.on('connect',function(socket){
 	console.log(users)
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
+
+	// FINISH THIS 
+	// io.sockets.on('start_game'){
+	// 	sockets.emit('start_game', {playerTotal: 10})
+	// }
+
+	socket.on('ping', function(data){
+		// console.log(data.message);
+		io.sockets.emit('pong', {
+			id: data.id,
+			playerX: data.playerX,
+			playerY: data.playerY,
+			message: "update move"
+		})
+	})
 
 	socket.on('disconnect', function(){
 		console.log(socket.id + ' has disconnected');
