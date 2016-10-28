@@ -12,9 +12,10 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	});
 
 	socket.on('users', function(users){
+		playerList = users;
+		//moves to lobby enter
 		var blueTeam = [];
 		var redTeam = [];
-		playerList = users;
 		for(var i = 0; i < users.length; i++){
 			if (users[i].team === 'Blue'){
 				blueTeam.push(users[i]);
@@ -28,6 +29,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		}
 		$scope.blueTeam = blueTeam;
 		$scope.redTeam = redTeam;
+		//end move to enter lobby
 	})
 	socket.on('pong', function(data){
 		if(data.id != myId){
@@ -97,6 +99,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$('.navbar-text').text('Signed in as ' + $scope.username);
 					$timeout(function(){
 						$location.path('/lobby');
+						updateLobbyCount();
 					}, 1500);
 				}
 			}, function errorCallback(response){
@@ -122,6 +125,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 				$('.navbar-text').text('Signed in as ' + $scope.username);
 				$timeout(function(){
 					$location.path('/lobby');
+					updateLobbyCount();
 				}, 1500);
 			}else if(response.data.failure == 'noUser'){
 				$scope.notFound = true;
@@ -172,6 +176,19 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		username = $scope.username;
 		socket.emit('user_to_server', username);
 		//end socket emit
+	}
+	//this tells sockets to prepare to send to all in the lobby, who has entered.
+	function updateLobbyCount(){
+		for(var i = 0; i < playerList.length; i++){
+			if(playerList[i].socketID == myId){
+				var lobbyPlayer = playerList[i];
+			}
+		}
+		socket.emit('enter_lobby', {
+			id: myId,
+			player: lobbyPlayer
+		});
+		console.log('someone is entering the lobby')
 	}
 
 
