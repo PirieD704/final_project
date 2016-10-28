@@ -3,8 +3,14 @@
 playerList = [];
 var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
+	var num_ready = 0;
+	var apiPath = 'http://10.150.50.55:3000';
 
-	var apiPath = 'http://localhost:3000';
+	// checkTeam()
+
+	// function checkTeam(){
+	// 	if user[i].team
+	// }
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);
@@ -13,42 +19,71 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 
 	socket.on('users', function(users){
 		playerList = users;
-		//moves to lobby enter
+	})
+
+	socket.on('lobby_list_update', function(users){
 		var blueTeam = [];
 		var redTeam = [];
 		for(var i = 0; i < users.length; i++){
 			if (users[i].team === 'Blue'){
 				blueTeam.push(users[i]);
-				console.log('blue team-------------',blueTeam)
 			}else if (users[i].team === 'Red'){
 				redTeam.push(users[i]);
-				console.log(redTeam)
 			}else{
-				console.log('error - no team');
+				console.log('no team assigned yet');
 			}
 		}
 		$scope.blueTeam = blueTeam;
 		$scope.redTeam = redTeam;
-		//end move to enter lobby
+		socket.emit('lobby_teams', users);
+			console.log('teams are updated');
+			if(redTeam.length + blueTeam.length === 2){
+				$scope.gameReady = true;
+		}
 	})
+
+	$scope.start_game = function(){
+		num_ready++;
+		console.log(num_ready);
+		socket.emit('init_game', {
+			message: 'players ready', 
+			id: myId,
+			num_ready: num_ready
+		})
+		console.log(myId);
+	}
+
+	socket.on('player_ready', function(data){
+		console.log(data);
+		num_ready = data;
+	})
+	
+	socket.on('game_launch', function(users){	
+		console.log('game start');
+		$location.path('/canvas');	
+	})
+
+
 	socket.on('pong', function(data){
 		if(data.id != myId){
 			// It's not me who ponged. Move this guy.
 			// console.log(data)
 			// console.log(playersPresent)
-			for (var i in playersPresent){
+			if(playersPresent){
+				for (var i in playersPresent){
 				// console.log(playersPresent[key])
-				if(playersPresent[i].unique_id == data.id){
-					var guyWhoJustPongedAndNotMe = playersPresent[i];
-					// console.log(guyWhoJustPongedAndNotMe.player.x);
-					// guyWhoJustPongedAndNotMe.y = data.playerY
-					guyWhoJustPongedAndNotMe.player.position.x = data.playerX
-					guyWhoJustPongedAndNotMe.player.position.y = data.playerY
+					if(playersPresent[i].unique_id == data.id){
+						var guyWhoJustPongedAndNotMe = playersPresent[i];
+						// console.log(guyWhoJustPongedAndNotMe.player.x);
+						// guyWhoJustPongedAndNotMe.y = data.playerY
+						guyWhoJustPongedAndNotMe.player.position.x = data.playerX
+						guyWhoJustPongedAndNotMe.player.position.y = data.playerY
 
 
-					// console.log(guyWhoJustPongedAndNotMe)
-					// guyWhoJustPongedAndNotMe.player.
-					// sprite.body.moveTo(2000, 300, Phaser.ANGLE_RIGHT);
+						// console.log(guyWhoJustPongedAndNotMe)
+						// guyWhoJustPongedAndNotMe.player.
+						// sprite.body.moveTo(2000, 300, Phaser.ANGLE_RIGHT);
+					}
 				}
 			}
 		}
@@ -101,6 +136,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 						$location.path('/lobby');
 						updateLobbyCount();
 					}, 1500);
+					setTimeout(tutorialModal, 1600);
 				}
 			}, function errorCallback(response){
 				console.log(response);
@@ -167,6 +203,20 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	$scope.toCanvas = () => {
 		$location.path('/canvas');
 	};
+
+	//======================
+	// -- TUTORIAL INIT --
+	//======================
+
+	function tutorialModal(){
+		$('#tutorialModal').modal();
+	}
+
+	$scope.help = function(){
+		tutorialModal();
+		$location.path('/lobby');
+	}
+
 	//==================================================
 	// SOCKET FUNCTIONS
 	//==================================================
@@ -188,8 +238,10 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			id: myId,
 			player: lobbyPlayer
 		});
-		console.log('someone is entering the lobby')
+		console.log('someone is entering the lobby');
 	}
+	
+		
 
 
 	//==================================================
