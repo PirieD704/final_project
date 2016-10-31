@@ -33,19 +33,21 @@ Player = function (game, team, position, flag, game_id, id) {
     this.game = game;
     if(team === 'Blue'){
         this.player = game.add.sprite(blue_position[position][0], blue_position[position][1], 'blue_player', 'blue_team');
+        this.team_flag = 'blue_flag';
         console.log("Drawing a blue guy")
     }else{
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player', 'red_team');
+        this.team_flag = 'red_flag';
     }
     this.player_id = game_id;
     this.unique_id = id;
     this.boost = 0;
+    this.boostTurn = 0;
 
+    this.player.scale.setTo(0.35, 0.35);
     game.physics.p2.enable(this.player);
 
     this.player.anchor.set(0.5, 0.5);
-
-    this.player.scale.setTo(0.35, 0.35);
 
  
 };
@@ -53,37 +55,47 @@ Player.prototype.update = function(who) {
     //it's me
     if(who == 'me'){
         for (var i in this.input) this.cursor[i] = this.input[i];
-            this.player.body.setZeroVelocity();
+            // this.player.body.setZeroVelocity();
+            this.player.body.velocity.x = 0;
+            this.player.body.velocity.y = 0;
+            this.player.body.angularVelocity = 0;
             if (this.cursor.boost){
                 this.boost = 300;
+                this.boostTurn = 70;
             }else{
                 this.boost = 0;
-            }
+                this.boostTurn = 0;
 
-            if (this.cursor.up)
-            {
-                this.player.body.moveUp(300 + this.boost)
-            }
-            else if (this.cursor.down)
-            {
-                this.player.body.moveDown(300 + this.boost);
             }
 
             if (this.cursor.left)
             {
-                this.player.body.moveLeft(300 + this.boost);
+                // allows the player to turn left.  This is reset by reseting angularVelocity up above
+                this.player.body.rotateLeft(80 + this.boostTurn);
             }
             else if (this.cursor.right)
             {
-                this.player.body.moveRight(300 + this.boost);
+                // allows the player to turn right.  This is reset by reseting angularVelocity up above
+                this.player.body.rotateRight(80 + this.boostTurn);
             }
+
+            if (this.cursor.up)
+            {
+                this.player.body.moveForward(300 + this.boost);
+            }
+            // else if (this.cursor.down)
+            // {
+            //     this.player.body.moveDown(300 + this.boost);
+            // }
+
+
         }else{
             // its NOT me
 
             if(this.player.position.x !== undefined){
 
                 this.player.body.reset(this.player.position.x, this.player.position.y, 100);
-
+                this.player.body.rotation = this.player.rotation;
             }
         }            
     game.world.wrap(this.player, 16);

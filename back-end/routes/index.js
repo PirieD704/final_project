@@ -117,6 +117,12 @@ io.sockets.on('connect',function(socket){
 			console.log("users are ready");
 			io.sockets.emit('game_launch', users);
 				console.log('game launching');
+			flag_x = Math.floor(Math.random() * 1900 + 10);
+			flag_y = Math.floor(Math.random() * 1900 + 10);
+			io.sockets.emit('flag_coord', {
+				flag_x:flag_x,
+				flag_y:flag_y
+			});
 		}else{
 			io.sockets.emit('player_ready', data.num_ready);
 				console.log('no launch yet');	
@@ -133,7 +139,22 @@ io.sockets.on('connect',function(socket){
 			id: data.id,
 			playerX: data.playerX,
 			playerY: data.playerY,
+			playerRotation: data.playerRotation,
 			message: "update move"
+		})
+	})
+	socket.on('get_coord', function(data){
+		flag_x = Math.floor(Math.random() * 1900 + 10);
+		flag_y = Math.floor(Math.random() * 1900 + 10);
+		io.sockets.emit('flag_coord', {
+			flag_x:flag_x,
+			flag_y:flag_y
+		});
+	})
+	socket.on('flag_changed', function(data){
+		new_color = data.flag_color;
+		io.sockets.emit('flag_color', {
+			new_color:new_color
 		})
 	})
 
