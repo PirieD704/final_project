@@ -4,7 +4,7 @@ playerList = [];
 var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 	var num_ready = 0;
-	var apiPath = 'http://localhost:3000';
+	var apiPath = 'http://10.150.51.39:3000';
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);
@@ -76,8 +76,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 						guyWhoJustPongedAndNotMe.player.position.x = data.playerX
 						guyWhoJustPongedAndNotMe.player.position.y = data.playerY
 						guyWhoJustPongedAndNotMe.player.rotation = data.playerRotation
-						console.log(data.playerX);
-
+						// console.log(data.playerX);
 					}
 				}
 			}
