@@ -62,7 +62,7 @@ function create() {
             other_players.push(other_player);
         }
     }
-    console.log(player)
+    console.log(player.player.rotation)
     // console.log(other_players)
     // console.log(sprite)
     // console.log(playersPresent);
@@ -178,6 +178,7 @@ function ping(){
         playerY: player.player.position.y,
         playerRotation: player.player.rotation
     })
+    // console.log(player.player.rotation);
 }
 //put in controller
 function updateAll(){
