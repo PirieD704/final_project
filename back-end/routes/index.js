@@ -133,6 +133,7 @@ io.sockets.on('connect',function(socket){
 			id: data.id,
 			playerX: data.playerX,
 			playerY: data.playerY,
+			playerRotation: data.playerRotation,
 			message: "update move"
 		})
 	})

@@ -62,7 +62,7 @@ function create() {
             other_players.push(other_player);
         }
     }
-    // console.log(player)
+    console.log(player)
     // console.log(other_players)
     // console.log(sprite)
     // console.log(playersPresent);
@@ -121,7 +121,7 @@ function updateLand() {
 function updateMe() {
     if(player.alive){
         player.input.up = cursors.up.isDown;
-        player.input.down = cursors.down.isDown;
+        // player.input.down = cursors.down.isDown;
         player.input.left = cursors.left.isDown;
         player.input.right = cursors.right.isDown;
         // player.input.laser = fireButton.isDown;
@@ -171,11 +171,12 @@ function updateMe() {
 // }
 
 function ping(){
-    // console.log(player.player.position.x)
+    // console.log("This is the player.object: " + player.player);
     socket.emit('ping', {
         id: myId,
         playerX: player.player.position.x,
-        playerY: player.player.position.y
+        playerY: player.player.position.y,
+        playerRotation: player.player.rotation
     })
 }
 //put in controller
