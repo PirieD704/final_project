@@ -4,7 +4,7 @@ playerList = [];
 var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 	var num_ready = 0;
-	var apiPath = 'http://10.150.50.252:3000';
+	var apiPath = 'http://localhost:3000';
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);
@@ -74,6 +74,10 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 			}
 		}
 
+	})
+
+	socket.on('updateFlags', function(data){
+		console.log(data);
 	})
 
 	// registration page 
