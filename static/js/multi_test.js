@@ -137,7 +137,7 @@ function checkOverlap(spriteA, spriteB) {
 
 function flagPossession(){
     for(i in playersPresent){
-        if(checkOverlap(playersPresent[i], flag)){
+        if(checkOverlap(playersPresent[i].player, flag)){
             flag.loadTexture(playersPresent[i].team_flag);
             socket.emit('flag_changed', {
                 flag_color: playersPresent[i].team_flag
