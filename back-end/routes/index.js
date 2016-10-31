@@ -58,7 +58,7 @@ router.post('/login', function(req, res, next){
 			}else{
 				var loginResult = bcrypt.compareSync(req.body.password, document.password);
 				if(loginResult){
-					Account.update({username: document.username}).exec();
+					Account.update({username: document.username, password: document.password}).exec();
 					res.json({success:'userFound', username: document.username,});
 					loggedIn = true;
 				}else{
@@ -75,28 +75,60 @@ router.post('/login', function(req, res, next){
 
 var socketIo = require('socket.io');
 var users = [];
+var lobby_users = 0;
 var game_players = [];
+var sockets = [];
 
 io.sockets.on('connect',function(socket){
-	console.log(socket.id);
+	socket.emit('player_init', socket.id);
 	users.push({
 		socketID: socket.id,
 		username: 'Anonymous',
 		team: ''
 	});
-	//change users to game_players. this will check who wants to play a game, and then assigns them a team based on the players in the waiting room.
-	//this prevents people just looking at the site from being assigned a team and ruining our system. they would be jerks.
-	if (users.length % 2 === 0){
-		users[users.length -1].team = 'Red'
-	}else{
-		users[users.length -1].team = 'Blue'
-	}
+	
+	//don't assign a team to users until they enter the lobby, this way, no matter the order users on the home page enter
+	//they'll still be assigned to the right team and there won't be two people on one team and no people on the other
+	socket.on('enter_lobby', function(data){
+		for(var i = 0; i < users.length; i++){
+			if(users[i].socketID == data.id){
+				lobby_users++;
+				if (lobby_users % 2 === 0){
+					users[i].team = 'Red'
+				}else{
+					users[i].team = 'Blue'
+				}
+			}
+			console.log(users[i].username + " has been assigned to team " + users[i].team)
+		}
+		io.sockets.emit('lobby_list_update', users);
+			console.log('the lobby list has been updated');
+	})
+	
+
+
 	console.log(users)
 	console.log('someone has connected via a socket!');
 	io.sockets.emit('users', users);
 
+	socket.on('init_game', function(data){
+		console.log(data.num_ready, users.length);
+		if(data.num_ready == users.length){
+			console.log("users are ready");
+			io.sockets.emit('game_launch', users);
+				console.log('game launching');
+		}else{
+			io.sockets.emit('player_ready', data.num_ready);
+				console.log('no launch yet');	
+		}
+	})
+	// FINISH THIS 
+	// io.sockets.on('start_game'){
+	// 	sockets.emit('start_game', {playerTotal: 10})
+	// }
+
 	socket.on('ping', function(data){
-		console.log(data.message);
+		// console.log(data.message);
 		io.sockets.emit('pong', {
 			id: data.id,
 			playerX: data.playerX,
