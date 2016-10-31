@@ -4,13 +4,7 @@ playerList = [];
 var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 	var num_ready = 0;
-	var apiPath = 'http://10.150.50.55:3000';
-
-	// checkTeam()
-
-	// function checkTeam(){
-	// 	if user[i].team
-	// }
+	var apiPath = 'http://10.150.50.252:3000';
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);
@@ -67,39 +61,19 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	socket.on('pong', function(data){
 		if(data.id != myId){
 			// It's not me who ponged. Move this guy.
-			// console.log(data)
-			// console.log(playersPresent)
 			if(playersPresent){
 				for (var i in playersPresent){
-				// console.log(playersPresent[key])
 					if(playersPresent[i].unique_id == data.id){
 						var guyWhoJustPongedAndNotMe = playersPresent[i];
-						// console.log(guyWhoJustPongedAndNotMe.player.x);
-						// guyWhoJustPongedAndNotMe.y = data.playerY
 						guyWhoJustPongedAndNotMe.player.position.x = data.playerX
 						guyWhoJustPongedAndNotMe.player.position.y = data.playerY
+						console.log(data.playerX);
 
-
-						// console.log(guyWhoJustPongedAndNotMe)
-						// guyWhoJustPongedAndNotMe.player.
-						// sprite.body.moveTo(2000, 300, Phaser.ANGLE_RIGHT);
 					}
 				}
 			}
 		}
-		// for (i in playersPresent){
-		// 	if (playersPresent[i].unique_id == data.id){
-		// 		console.log(data.message);
-		// 	}else{
-		// 		console.log('yo')
-				// for(i in other_players){
-				// 	if(other_players[i].other_player.unique_id == data.id){
-				// 		other_players[i].other_player.position.x = data.playerX;
-				// 		other_players[i].other_player.position.y = data.playerY;
-				// 	}
-				// }
-		// 	}
-		// }
+
 	})
 
 	// registration page 
