@@ -67,6 +67,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 						var guyWhoJustPongedAndNotMe = playersPresent[i];
 						guyWhoJustPongedAndNotMe.player.position.x = data.playerX
 						guyWhoJustPongedAndNotMe.player.position.y = data.playerY
+						guyWhoJustPongedAndNotMe.player.rotation = data.playerRotation
 						console.log(data.playerX);
 
 					}
