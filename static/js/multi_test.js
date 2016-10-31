@@ -1,20 +1,26 @@
-
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: updateAll, render:render });
 
 var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
 var redTotal, blueTotal = 0;
 
+var x;
+
 function preload() {
 
-	game.load.image('background', '/static/images/background.png');
-	game.load.image('particle', '/static/images/green_particle.png');
+    console.log(game.stage);
+
+    game.load.image('background', '/static/images/background.png');
+    game.load.image('particle', '/static/images/green_particle.png');
     game.load.image('flare', '/static/images/flare.png');
     game.load.image('red_player', '/static/images/red_orb.png');
     game.load.image('blue_player', '/static/images/blue_orb.png');
     game.load.image('player', '/static/images/player_1.png');
     game.load.image('flag', '/static/images/unclaimed_flag.png');
     game.load.image('shield', '/static/images/shield_fp.png');
-
+    game.stage.disableVisibilityChange = false;
+    x = game.stage.checkVisibility();
+    console.log(x)
+    game.stage.disableVisibilityChange = true;
 }
 
 function create() {
@@ -22,22 +28,26 @@ function create() {
     playersPresent = {};
     other_players = [];
 
-	land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
+    land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
-    flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');this.game.time.events.loop(2000, function() {  this.game.add.tween(flag).to({x: this.game.world.randomX, y: this.game.world.randomY}, 3000, Phaser.Easing.Quadratic.InOut, true);}, this)
+    flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
+    this.game.time.events.loop(2000, function() {  
+        this.game.add.tween(flag).to({
+            x: this.game.world.randomX, 
+            y: this.game.world.randomY}, 
+            3000, 
+            Phaser.Easing.Quadratic.InOut, 
+            true);}, 
+        this)
     flag.scale.setTo(0.35, 0.35);
     console.log(playerList);
-    if (playerList.length != 0){
-        for (i in playerList){
-            playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
-            // myId = playerList[i].socketID;
-            // console.log(myId)
-        }
-        // console.log(playersPresent);
-    }else{
-        console.log('no players')
+    for (i in playerList){
+        playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
+        playersPresent[i].visible = true;
+        // myId = playerList[i].socketID;
+        console.log("my ID: ",myId)
     }
 
     for (i in playersPresent){
@@ -64,7 +74,7 @@ function create() {
     fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
     boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
-    // sprite.anchor.set(0.5);
+    sprite.anchor.set(0.5, 0.5);
     // shield.anchor.set(0.5);
 
     // creat our team and flag groups
@@ -87,7 +97,7 @@ function create() {
     game.world.setBounds(0, 0, 1920, 1920);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
-    game.stage.disableVisibilityChange = false;
+    // game.stage.disableVisibilityChange = false;
 
     // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
@@ -96,6 +106,8 @@ function create() {
 
     //camera follows players / center
     game.camera.follow(sprite);
+
+    console.log("Done Creating.")
 
 }
 
