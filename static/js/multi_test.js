@@ -15,7 +15,7 @@ function preload() {
     game.load.image('red_player', '/static/images/red_orb.png');
     game.load.image('blue_player', '/static/images/blue_orb.png');
     game.load.image('player', '/static/images/player_1.png');
-    game.load.image('flag', '/static/images/unclaimed_flag.png');
+    game.load.image('flag', '/static/images/flag_orb_unclaimed.png');
     game.load.image('shield', '/static/images/shield_fp.png');
     game.stage.disableVisibilityChange = false;
     x = game.stage.checkVisibility();
@@ -33,14 +33,14 @@ function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
-    this.game.time.events.loop(2000, function() {  
-        this.game.add.tween(flag).to({
-            x: this.game.world.randomX, 
-            y: this.game.world.randomY}, 
-            3000, 
-            Phaser.Easing.Quadratic.InOut, 
-            true);}, 
-        this)
+    // this.game.time.events.loop(2000, function() {  
+    //     this.game.add.tween(flag).to({
+    //         x: this.game.world.randomX, 
+    //         y: this.game.world.randomY}, 
+    //         3000, 
+    //         Phaser.Easing.Quadratic.InOut, 
+    //         true);}, 
+    //     this)
     flag.scale.setTo(0.35, 0.35);
     console.log(playerList);
     for (i in playerList){
@@ -135,6 +135,19 @@ function updateMe() {
 
 }
 
+function updateFlag(){
+  flag.game.time.events.loop(2000, function() {  
+        this.game.add.tween(flag).to({
+            x: this.game.world.randomX, 
+            y: this.game.world.randomY}, 
+            3000, 
+            Phaser.Easing.Quadratic.InOut, 
+            true);}, 
+        this) 
+    console.log({x: this.game.world.randomX, 
+            y: this.game.world.randomY});     
+}
+
 //work in progress for tracking other people's movements.
 // function updateOthers() {
 //     for(i in other_players){
@@ -182,6 +195,7 @@ function ping(){
 function updateAll(){
     updateLand();
     updateMe();
+    updateFlag();
     ping();
 }
 
