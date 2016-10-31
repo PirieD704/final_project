@@ -33,9 +33,11 @@ Player = function (game, team, position, flag, game_id, id) {
     this.game = game;
     if(team === 'Blue'){
         this.player = game.add.sprite(blue_position[position][0], blue_position[position][1], 'blue_player', 'blue_team');
+        this.team_flag = 'blue_flag';
         console.log("Drawing a blue guy")
     }else{
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player', 'red_team');
+        this.team_flag = 'red_flag';
     }
     this.player_id = game_id;
     this.unique_id = id;

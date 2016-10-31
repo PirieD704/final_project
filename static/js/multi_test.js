@@ -3,6 +3,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, 
 var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
 var redTotal, blueTotal = 0;
 
+var flag_x, flag_y = 800;
+
 var x;
 
 function preload() {
@@ -16,6 +18,8 @@ function preload() {
     game.load.image('blue_player', '/static/images/blue_orb.png');
     game.load.image('player', '/static/images/player_1.png');
     game.load.image('flag', '/static/images/flag_orb_unclaimed.png');
+    game.load.image('red_flag', '/static/images/flag_orb_red.png');
+    game.load.image('blue_flag', '/static/images/flag_orb_blue.png');
     game.load.image('shield', '/static/images/shield_fp.png');
     game.stage.disableVisibilityChange = false;
     x = game.stage.checkVisibility();
@@ -33,14 +37,15 @@ function create() {
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
-    // this.game.time.events.loop(2000, function() {  
-    //     this.game.add.tween(flag).to({
-    //         x: this.game.world.randomX, 
-    //         y: this.game.world.randomY}, 
-    //         3000, 
-    //         Phaser.Easing.Quadratic.InOut, 
-    //         true);}, 
-    //     this)
+    this.game.time.events.loop(3100, function() {  
+        this.game.add.tween(flag).to({
+            x: flag_x, 
+            y: flag_y}, 
+            3000, 
+            Phaser.Easing.Quadratic.InOut, 
+            true);
+    }, 
+        this)
     flag.scale.setTo(0.35, 0.35);
     console.log(playerList);
     for (i in playerList){
@@ -76,20 +81,9 @@ function create() {
 
     sprite.anchor.set(0.5, 0.5);
     // shield.anchor.set(0.5);
-
-    // creat our team and flag groups
-    // blueTeam = game.add.group();
-    // blueTeam.enableBody = true;
-    // blueTeam.physicsBodyType = Phaser.Physics.ARCADE;
-    // redTeam = game.add.group();
-    // redTeam.enableBody = true;
-    // redTeam.physicsBodyType = Phaser.Physics.ARCADE;
     flagGroup = game.add.group();
     flagGroup.enableBody = true;
     flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
-
-    // add sprite to a team
-    // blueTeam.add(sprite);
 
     // add flag to flag group
     flagGroup.add(flag);
@@ -97,9 +91,6 @@ function create() {
     game.world.setBounds(0, 0, 1920, 1920);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
-    // game.stage.disableVisibilityChange = false;
-
-    // game.physics.p2.enable(sprite);
     cursors = game.input.keyboard.createCursorKeys();
 
     // other_cursors = game.input.keyboard.createCursorKeys();
@@ -135,53 +126,35 @@ function updateMe() {
 
 }
 
-function updateFlag(){
-  flag.game.time.events.loop(2000, function() {  
-        this.game.add.tween(flag).to({
-            x: this.game.world.randomX, 
-            y: this.game.world.randomY}, 
-            3000, 
-            Phaser.Easing.Quadratic.InOut, 
-            true);}, 
-        this) 
-    console.log({x: this.game.world.randomX, 
-            y: this.game.world.randomY});     
+function checkOverlap(spriteA, spriteB) {
+
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
+
 }
 
-//work in progress for tracking other people's movements.
-// function updateOthers() {
-//     for(i in other_players){
-//         if(other_players[i].other_player.alive){
-//             moveToXY(other_players[i].other_player,)
-//             // other_players[i].other_player
-//             other_player.input.left = cursors.left.isDown;
-//             other_player.input.right = cursors.right.isDown;
-//             other_player.input.laser = fireButton.isDown;
-//             other_player.input.flare = fireButton2.isDown;
-//             other_player.input.boost = boost.isDown;
-//             other_player.update();
-//         }
-//     }
-// }
+function flagPossession(){
+    for(i in playersPresent){
+        if(checkOverlap(playersPresent[i], flag)){
+            flag.loadTexture(playersPresent[i].team_flag);
+            socket.emit('flag_changed', {
+                flag_color: playersPresent[i].team_flag
+            })
+        }
+    }
+}
 
-// socket.on("pong", function(data){
-    // console.log(data)
-    // for(i in playersPresent)
-    //     if(playersPresent[i].alive){
-    //         if(playersPresent[i].id == myId){
-    //             playersPresent[i].player.position.x = data.playerX;
-    //             playersPresent[i].player.position.y = data.playerY;
-    //             playersPresent[i].player_shield.position.x = data.shieldX;
-    //             playersPresent[i].player_shield.position.y = data.shieldY;              
-    //         }
-    //     }
-// });
-
-// our callback for when a collision is made
-// function collisionHandler(){
-//     console.log("collision!")
-//     flag.loadTexture('blueFlag', 0)
-// }
+function updateFlag(){
+  if((flag.x == flag_x) && (flag.y == flag_y)){
+    socket.emit('get_coord', {
+        flag_x: flag_x,
+        flag_y: flag_x
+    })
+    console.log('new coords for flag')
+  }  
+}
 
 function ping(){
     // console.log("This is the player.object: " + player.player);
@@ -198,6 +171,7 @@ function updateAll(){
     updateLand();
     updateMe();
     updateFlag();
+    flagPossession();
     ping();
 }
 

@@ -57,6 +57,14 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		$location.path('/canvas');	
 	})
 
+	socket.on('flag_coord', function(data){
+		flag_x = data.flag_x;
+		flag_y = data.flag_y;
+	});
+	socket.on('flag_color', function(data){
+		flag.loadTexture(data.new_color);
+	})
+
 
 	socket.on('pong', function(data){
 		if(data.id != myId){
