@@ -44,11 +44,10 @@ Player = function (game, team, position, flag, game_id, id) {
     this.boost = 0;
     this.boostTurn = 0;
 
+    this.player.scale.setTo(0.35, 0.35);
     game.physics.p2.enable(this.player);
 
     this.player.anchor.set(0.5, 0.5);
-
-    this.player.scale.setTo(0.35, 0.35);
 
  
 };
