@@ -1,13 +1,16 @@
-<div class='container canvas-page'>
+<div class='container-fluid canvas-page'>
 	<div class='row'>
-		<div class='register col-sm-12'>
+		<div class='register col-sm-12 text-center'>
 			<h1>Space Balls - Let's Play</h1>
 		</div>
 	</div>	
 
 	<div class='row teams'>
-		<div class='home-team col-sm-3 panel'>
+		<div class='home-team team-list hidden-xs hidden-sm col-md-2 col-lg-2 panel text-center'>
 			<div class='panel-heading'>
+				<div class="team-score hidden-xs hidden-sm col-md-12 col-lg-12">
+					Blue Score:
+				</div>
 				<h3>Blue Team Players</h3>
 			</div>
 			<div class='panel-body'>
@@ -17,21 +20,27 @@
 			</div>
 		</div> 
 
-		<div class='main-display col-sm-6'>
-			<div class='col-sm-4'>
-				Score:
+		<div class='main-display col-xs-12 col-sm-12 col-md-8 col-lg-8'>
+			<div class='col-xs-4 col-sm-4 hidden-md hidden-lg'>
+				Blue Team Score:
 			</div>
-			<div class='col-sm-4'>
+			<div class='col-xs-4 col-sm-4 col-md-12'>
 				Timer:
 			</div>
-			<div class='col-sm-4'>
-				TBD
+			<div class='col-xs-4 col-sm-4 hidden-md hidden-lg'>
+				Red Team Score: 
 			</div>
+			<div class='col-sm-12'>	
+				<div id="canvas"></div>
+			</div>	
 		</div>
 
 
-		<div class='away-team col-sm-3 panel'>
+		<div class='away-team team-list hidden-xs hidden-sm col-md-2 col-lg-2 panel text-center'>
 			<div class='panel-heading'>
+				<div class="team-score hidden-xs hidden-sm col-md-12 col-lg-12">
+					Red Score:
+				</div>
 				<h3>Red Team Players</h3>
 			</div>
 			<div class='panel-body'>
@@ -42,9 +51,7 @@
 		</div> 
 	</div>
 
-	<div class='row'>	
-		<div id="canvas"></div>
-	</div>	
+
 
 
 </div>
