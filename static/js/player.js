@@ -16,7 +16,8 @@ Player = function (game, team, position, flag, game_id, id) {
         right:false,
         up:false,
         down:false,
-        fire:false,
+        flare:false,
+        blaster:false,
         boost: false
     }
 
@@ -25,7 +26,8 @@ Player = function (game, team, position, flag, game_id, id) {
         right:false,
         up:false,
         down:false,
-        fire:false,
+        flare:false,
+        blaster:false,
         boost: false
     }
 
@@ -39,6 +41,11 @@ Player = function (game, team, position, flag, game_id, id) {
         this.player = game.add.sprite(red_position[position][0], red_position[position][1], 'red_player', 'red_team');
         this.team_flag = 'red_flag';
     }
+    this.player.scale.setTo(0.35, 0.35);
+
+    this.player.anchor.set(0.5, 0.5);
+
+    game.physics.p2.enable(this.player);
     this.player_id = game_id;
     this.unique_id = id;
     this.flare = game.add.weapon(10, 'flare');
@@ -47,14 +54,18 @@ Player = function (game, team, position, flag, game_id, id) {
     this.flare.bulletSpeed = 300;
     this.flare.fireRate = 300;
     this.flare.trackSprite(this.player, 0, 0, true);
+    //This will be the main weapon
+    this.blaster = game.add.weapon(30, 'particle');
+    this.blaster.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+    this.blaster.bulletSpeed = 900;
+    this.blaster.fireRate = 80;
+    this.blaster.trackSprite(this.player, 0, 0);
+    // this.blaster.fireAngle = (this.player.rotation * (180/Math.PI));
+    console.log(this.player);
     this.boost = 0;
     this.boostTurn = 0;
 
-    this.player.scale.setTo(0.35, 0.35);
 
-    this.player.anchor.set(0.5, 0.5);
-
-    game.physics.p2.enable(this.player);
 
 };
 Player.prototype.update = function(who) {
@@ -76,6 +87,10 @@ Player.prototype.update = function(who) {
             if(this.cursor.flare){
                 this.flare.fireAtSprite(flag);
             }
+            if(this.cursor.blaster){
+                this.blaster.fireAngle = this.player.angle - 90;
+                this.blaster.fire();
+            }
 
             if (this.cursor.left)
             {
@@ -92,10 +107,10 @@ Player.prototype.update = function(who) {
             {
                 this.player.body.moveForward(300 + this.boost);
             }
-            // else if (this.cursor.down)
-            // {
-            //     this.player.body.moveDown(300 + this.boost);
-            // }
+            else if (this.cursor.down)
+            {
+                this.player.body.moveBackward(300 + this.boost);
+            }
 
 
         }else{
