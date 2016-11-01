@@ -88,6 +88,10 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 		console.log(data);
 	})
 
+	socket.on('replay_init', function(data){
+		game.state.start('Game');
+	})
+
 	// registration page 
 	$scope.register = function(){
 		if($scope.password != $scope.password2){
