@@ -45,6 +45,10 @@ a {
 	color: black;
 }
 
+.team-score{
+	padding: 10px;
+}
+
 h3{
 	font-size: 20px;
 }
@@ -72,6 +76,10 @@ h3{
 .main-display{
 	color: white;
 	text-align: center;
+}
+
+.team-list {
+	margin-top: 10%;
 }
 
 canvas {
