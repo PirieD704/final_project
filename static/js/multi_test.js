@@ -1,6 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: updateAll, render:render });
 
-var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
+var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land, timer, timerEvent;
 var redTotal, blueTotal = 0;
 
 var flag_x, flag_y = 800;
@@ -35,6 +35,15 @@ function create() {
     land = game.add.tileSprite(0, 0, 2000, 2000, 'background');
 
     game.physics.startSystem(Phaser.Physics.P2JS);
+
+    //  Create our Timer
+    timer = game.time.create();
+
+    //  Set a TimerEvent to occur after 2 seconds
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, endTimer, this);
+
+    //  It won't start automatically, allowing you to hook it to button events and the like.
+    timer.start();
 
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
     flag.scale.setTo(0.35, 0.35);
@@ -177,5 +186,23 @@ function updateAll(){
 
 
 function render() {
+    if (timer.running) {
+        game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+    }
+    else {
+        game.debug.text("Done!", 2, 14, "#0f0");
+    }
+};
 
+function endTimer() {
+    // Stop the timer when the delayed event triggers
+    console.log('stop');
+    timer.stop();
+}
+
+function formatTime(s) {
+    // Convert seconds (s) to a nicely formatted and padded time string
+    var minutes = "0" + Math.floor(s / 60);
+    var seconds = "0" + (s - minutes * 60);
+    return minutes.substr(-2) + ":" + seconds.substr(-2);   
 }
