@@ -1,4 +1,4 @@
-var Game_Over = {
+var Wait = {
 
     preload : function() {
 

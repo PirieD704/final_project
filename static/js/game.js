@@ -10,16 +10,16 @@ var Game = {
 
         console.log(game.stage);
 
-        game.load.image('background', '/static/images/background.png');
-        game.load.image('particle', '/static/images/green_particle.png');
-        game.load.image('flare', '/static/images/flare.png');
-        game.load.image('red_player', '/static/images/red_orb.png');
-        game.load.image('blue_player', '/static/images/blue_orb.png');
-        game.load.image('player', '/static/images/player_1.png');
-        game.load.image('flag', '/static/images/flag_orb_unclaimed.png');
-        game.load.image('red_flag', '/static/images/flag_orb_red.png');
-        game.load.image('blue_flag', '/static/images/flag_orb_blue.png');
-        game.load.image('shield', '/static/images/shield_fp.png');
+        game.load.image('background', 'static/images/background.png');
+        game.load.image('particle', 'static/images/green_particle.png');
+        game.load.image('flare', 'static/images/flare.png');
+        game.load.image('red_player', 'static/images/red_orb.png');
+        game.load.image('blue_player', 'static/images/blue_orb.png');
+        game.load.image('player', 'static/images/player_1.png');
+        game.load.image('flag', 'static/images/flag_orb_unclaimed.png');
+        game.load.image('red_flag', 'static/images/flag_orb_red.png');
+        game.load.image('blue_flag', 'static/images/flag_orb_blue.png');
+        game.load.image('shield', 'static/images/shield_fp.png');
         game.stage.disableVisibilityChange = false;
         x = game.stage.checkVisibility();
         console.log(x)
@@ -79,7 +79,7 @@ var Game = {
         // console.log(other_players)
         // console.log(sprite)
         // console.log(playersPresent);
-        // weapon = player.laser;
+        weapon = player.blaster;
         // weapon2 = player.flare;
         // console.log(this_player.player_shield)
 
@@ -114,6 +114,7 @@ var Game = {
         this.updateMe();
         this.updateFlag();
         this.flagPossession();
+        this.blasterHit();
         this.ping();
     },
     updateLand: function() {
@@ -125,11 +126,12 @@ var Game = {
     updateMe: function() {
         if(player.alive){
             player.input.up = cursors.up.isDown;
-            // player.input.down = cursors.down.isDown;
+            player.input.down = cursors.down.isDown;
             player.input.left = cursors.left.isDown;
             player.input.right = cursors.right.isDown;
             // player.input.laser = fireButton.isDown;
             player.input.flare = flareButton.isDown;
+            player.input.blaster = fireButton.isDown;
             player.input.boost = boost.isDown;
             player.update('me');
             for(i in other_players){
@@ -155,6 +157,16 @@ var Game = {
                 })
             }
         }
+    },
+    blasterHit: function(){
+        for(i in playersPresent){
+            if(this.checkOverlap(weapon.bullets, playersPresent[i].player)){
+                if(player.team_flag !== playersPresent[i].team_flag){
+                    console.log('hit enemy');
+                }
+            }
+        }
+
     },
     updateFlag: function(){
       if((flag.x == flag_x) && (flag.y == flag_y)){
