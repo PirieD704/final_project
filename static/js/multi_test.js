@@ -32,11 +32,12 @@ function create() {
     playersPresent = {};
     other_players = [];
 
-    land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
+    land = game.add.tileSprite(0, 0, 2000, 2000, 'background');
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
+    flag.scale.setTo(0.35, 0.35);
     this.game.time.events.loop(3100, function() {  
         this.game.add.tween(flag).to({
             x: flag_x, 
@@ -46,7 +47,6 @@ function create() {
             true);
     }, 
         this)
-    flag.scale.setTo(0.35, 0.35);
     console.log(playerList);
     for (i in playerList){
         playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
@@ -76,7 +76,7 @@ function create() {
     // console.log(this_player.player_shield)
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
+    flareButton = this.input.keyboard.addKey(Phaser.KeyCode.F);
     boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
     sprite.anchor.set(0.5, 0.5);
@@ -88,7 +88,7 @@ function create() {
     // add flag to flag group
     flagGroup.add(flag);
 
-    game.world.setBounds(0, 0, 1920, 1920);
+    game.world.setBounds(0, 0, 2000, 2000);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
     cursors = game.input.keyboard.createCursorKeys();
@@ -116,7 +116,7 @@ function updateMe() {
         player.input.left = cursors.left.isDown;
         player.input.right = cursors.right.isDown;
         // player.input.laser = fireButton.isDown;
-        player.input.flare = fireButton2.isDown;
+        player.input.flare = flareButton.isDown;
         player.input.boost = boost.isDown;
         player.update('me');
         for(i in other_players){
