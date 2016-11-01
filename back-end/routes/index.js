@@ -117,12 +117,7 @@ io.sockets.on('connect',function(socket){
 			console.log("users are ready");
 			io.sockets.emit('game_launch', users);
 				console.log('game launching');
-			flag_x = Math.floor(Math.random() * 1900 + 10);
-			flag_y = Math.floor(Math.random() * 1900 + 10);
-			io.sockets.emit('flag_coord', {
-				flag_x:flag_x,
-				flag_y:flag_y
-			});
+			flagCoordinates();
 		}else{
 			io.sockets.emit('player_ready', data.num_ready);
 				console.log('no launch yet');	
@@ -144,12 +139,7 @@ io.sockets.on('connect',function(socket){
 		})
 	})
 	socket.on('get_coord', function(data){
-		flag_x = Math.floor(Math.random() * 1980 + 10);
-		flag_y = Math.floor(Math.random() * 1980 + 10);
-		io.sockets.emit('flag_coord', {
-			flag_x:flag_x,
-			flag_y:flag_y
-		});
+		flagCoordinates();
 	})
 	socket.on('flag_changed', function(data){
 		new_color = data.flag_color;
@@ -157,12 +147,29 @@ io.sockets.on('connect',function(socket){
 			new_color:new_color
 		})
 	})
+	socket.on('player_ready', function(data){
+		//I want this to keep track of how many players are ready to play.
+		if(game_players.length == 0){
+			game_players.push(data.id);
+			console.log(game_players.length + ' ready, ' + lobby_users + ' playing');
+		}else if(game_players.length < lobby_users){
+			if(game_players.indexOf(data.id) == -1){
+				game_players.push(data.id);
+			}
+		}else{
+			io.sockets.emit('replay_init', users);
+			flagCoordinates();
+		}
+
+
+	})
 
 	socket.on('disconnect', function(){
 		console.log(socket.id + ' has disconnected');
 		for(var i = 0; i< users.length; i++){
 			if(users[i].socketID == socket.id){
 				users.splice(i, 1);
+				io.sockets.emit('users', users);
 				break;
 			}
 		}
@@ -181,6 +188,14 @@ io.sockets.on('connect',function(socket){
 		io.sockets.emit('users', users);
 	})
 });	
+function flagCoordinates(){
+	flag_x = Math.floor(Math.random() * 1960 + 10);
+	flag_y = Math.floor(Math.random() * 1960 + 10);
+	io.sockets.emit('flag_coord', {
+		flag_x:flag_x,
+		flag_y:flag_y
+	});
+}
 
 module.exports = router;
 server.listen(8080);
