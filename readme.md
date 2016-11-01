@@ -3,7 +3,7 @@
 
 ##Live Demo
 ---
-[Space Balls](tbd)
+[Space Balls](http://paigeniedringhaus.com/spaceBalls/)
 
 ##Contents
 --- 
@@ -23,7 +23,7 @@ This is a final project, capture the flag-style game we made as a group utilizin
 
 We built a multiplayer game where players try to find the 'flag' moving around the game board, change it to their color and defend it from players on the opposing team for a set amount of time to win the round and earn bragging rights.
 
-The game is built on the MEAN stack (MongoDB, Angular, Express and NodeJS) with the Phaser.io game engine driving the HTML5 canvas and Sockets.io making multiplayer possible.
+The game is built on the MEAN stack (MongoDB, Angular, Express and NodeJS) with the Phaser.io game engine driving the HTML5 canvas and Socket.io making multiplayer gaming possible.
 
 ##What We Used
 ---
@@ -99,7 +99,23 @@ Here's what our second level IVP (Intermediate Viable Product) featured:
 
 ##Screenshots
 ---
-TBD
+Register screen users see first 
+![alt text]()
+
+Lobby screen for users waiting to enter the game
+![alt text]()
+
+Blue player on canvas
+![alt text]()
+
+Blue player with flag it changed to blue
+![alt text]()
+
+Red player with flag it changed to red
+![alt text]()
+
+Waiting screen if there are no other players ready to play
+![alt text]()
 
 ##Code Examples
 ---
