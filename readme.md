@@ -100,22 +100,22 @@ Here's what our second level IVP (Intermediate Viable Product) featured:
 ##Screenshots
 ---
 Register screen users see first 
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/register-screen.png 'register-screen.png')
 
 Lobby screen for users waiting to enter the game
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/lobby.png 'lobby.png')
 
 Blue player on canvas
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/blue-player-alone.png 'blue-player-alone.png')
 
 Blue player with flag it changed to blue
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/blue-player.png 'blue-player.png')
 
 Red player with flag it changed to red
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/red-player-plus-ball.png 'red-player-plus-ball.png')
 
 Waiting screen if there are no other players ready to play
-![alt text]()
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/waiting-screen.png 'waiting-screen.png')
 
 ##Code Examples
 ---
