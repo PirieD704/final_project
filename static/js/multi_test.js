@@ -1,6 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'canvas', { preload: preload, create: create, update: updateAll, render:render });
 
-var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land;
+var sprite, flag, weapon, weapon2, playerList, blueTeam, redTeam, flagGroup, player, cursors, fireButton, fireButton2, boost, land, timer, timerEvent;
 var redTotal, blueTotal = 0;
 
 var flag_x, flag_y = 800;
@@ -32,11 +32,21 @@ function create() {
     playersPresent = {};
     other_players = [];
 
-    land = game.add.tileSprite(0, 0, 1920, 1920, 'background');
+    land = game.add.tileSprite(0, 0, 2000, 2000, 'background');
 
     game.physics.startSystem(Phaser.Physics.P2JS);
 
+    //  Create our Timer
+    timer = game.time.create();
+
+    //  Set a TimerEvent to occur after 2 seconds
+    timerEvent = timer.add(Phaser.Timer.SECOND * 5, endTimer, this);
+
+    //  It won't start automatically, allowing you to hook it to button events and the like.
+    timer.start();
+
     flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
+    flag.scale.setTo(0.35, 0.35);
     this.game.time.events.loop(3100, function() {  
         this.game.add.tween(flag).to({
             x: flag_x, 
@@ -46,7 +56,6 @@ function create() {
             true);
     }, 
         this)
-    flag.scale.setTo(0.35, 0.35);
     console.log(playerList);
     for (i in playerList){
         playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
@@ -76,7 +85,7 @@ function create() {
     // console.log(this_player.player_shield)
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    fireButton2 = this.input.keyboard.addKey(Phaser.KeyCode.F);
+    flareButton = this.input.keyboard.addKey(Phaser.KeyCode.F);
     boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
     sprite.anchor.set(0.5, 0.5);
@@ -88,7 +97,7 @@ function create() {
     // add flag to flag group
     flagGroup.add(flag);
 
-    game.world.setBounds(0, 0, 1920, 1920);
+    game.world.setBounds(0, 0, 2000, 2000);
     game.physics.startSystem(Phaser.Physics.P2JS);
     
     cursors = game.input.keyboard.createCursorKeys();
@@ -116,7 +125,7 @@ function updateMe() {
         player.input.left = cursors.left.isDown;
         player.input.right = cursors.right.isDown;
         // player.input.laser = fireButton.isDown;
-        player.input.flare = fireButton2.isDown;
+        player.input.flare = flareButton.isDown;
         player.input.boost = boost.isDown;
         player.update('me');
         for(i in other_players){
@@ -177,5 +186,23 @@ function updateAll(){
 
 
 function render() {
+    if (timer.running) {
+        game.debug.text(formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
+    }
+    else {
+        game.debug.text("Done!", 2, 14, "#0f0");
+    }
+};
 
+function endTimer() {
+    // Stop the timer when the delayed event triggers
+    console.log('stop');
+    timer.stop();
+}
+
+function formatTime(s) {
+    // Convert seconds (s) to a nicely formatted and padded time string
+    var minutes = "0" + Math.floor(s / 60);
+    var seconds = "0" + (s - minutes * 60);
+    return minutes.substr(-2) + ":" + seconds.substr(-2);   
 }

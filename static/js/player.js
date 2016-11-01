@@ -41,15 +41,21 @@ Player = function (game, team, position, flag, game_id, id) {
     }
     this.player_id = game_id;
     this.unique_id = id;
+    this.flare = game.add.weapon(10, 'flare');
+    this.flare.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
+    this.flare.bulletLifespan = 1000;
+    this.flare.bulletSpeed = 300;
+    this.flare.fireRate = 300;
+    this.flare.trackSprite(this.player, 0, 0, true);
     this.boost = 0;
     this.boostTurn = 0;
 
     this.player.scale.setTo(0.35, 0.35);
-    game.physics.p2.enable(this.player);
 
     this.player.anchor.set(0.5, 0.5);
 
- 
+    game.physics.p2.enable(this.player);
+
 };
 Player.prototype.update = function(who) {
     //it's me
@@ -66,6 +72,9 @@ Player.prototype.update = function(who) {
                 this.boost = 0;
                 this.boostTurn = 0;
 
+            }
+            if(this.cursor.flare){
+                this.flare.fireAtSprite(flag);
             }
 
             if (this.cursor.left)

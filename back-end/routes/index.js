@@ -144,8 +144,8 @@ io.sockets.on('connect',function(socket){
 		})
 	})
 	socket.on('get_coord', function(data){
-		flag_x = Math.floor(Math.random() * 1900 + 10);
-		flag_y = Math.floor(Math.random() * 1900 + 10);
+		flag_x = Math.floor(Math.random() * 1980 + 10);
+		flag_y = Math.floor(Math.random() * 1980 + 10);
 		io.sockets.emit('flag_coord', {
 			flag_x:flag_x,
 			flag_y:flag_y
