@@ -1,0 +1,15 @@
+#notes for starting program
+node_modules folder needs to be on the same level as package.json to properly install dependancies.
+this should be on the top level of the file structure.
+server.js must have the connect method for port 8000 and have node running on it.
+then make sure that npm install is run in the folder with package.json so that dependancies are installed.
+then run nodemon and define the path to www such that it knows where to find it. EX:
+nodemon back-end/bin/www
+this will render the route properly
+
+
+angular requirements
+must have routeProvider set up.
+have default views and route to second view.
+
+do not include node_modules in .gitignore file until we merge to master

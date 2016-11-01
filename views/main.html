@@ -1,0 +1,67 @@
+<div class='container register-page'>
+	<div class='row'>
+		<div class='register col-sm-12'>
+			<h1>Space Balls New Player Registration</h1>
+		</div>
+
+		<div class='col-sm-12'>
+			<form ng-submit='register()' id='registration-form' class='form-horizontal'>
+				<div class='form-group'>
+					<label class='col-sm-2'>
+						Username:
+					</label>
+					<div class='col-sm-4 box'>
+						<input type='text' ng-model='username' placeholder='Enter your username' minlength='4' maxlength='50' class='form-control'>
+					</div>
+				</div>
+				<div class='row alert' ng-show="nameTaken">
+					<div class='col-sm-10'>
+						<h4>Sorry, that username's already taken. Please choose another one.</h4>
+					</div>
+				</div>	
+				<div class='form-group'>
+					<label class='col-sm-2'>
+						Password:
+					</label>
+					<div class='col-sm-4 box'>
+						<input type='password' ng-model='password' placeholder='Enter your password' minlength='4' maxlength='50' class='form-control'>
+					</div>
+				</div>	
+				<div class='form-group'>
+					<label class='col-sm-2'>
+						Confirm Password:
+					</label>
+					<div class='col-sm-4 box'>
+						<input type='password' ng-model='password2' placeholder='Please confirm your password' minlength='4' maxlength='50' class='form-control'>
+					</div>	
+				</div>	
+				<div class='row alert' ng-show="invalidPass">
+					<div class='col-sm-10'>
+						<h4>Sorry, those passwords don't match. Please re-enter them.</h4>
+					</div>
+				</div>
+				
+				<div class='row button'>
+					<div class='button-holder col-sm-12'>
+						<button type='submit' class='btn btn-success'>Submit</button>
+					</div>
+				</div>
+			</form>
+				
+			<div class='row'>	
+				<div class='exist-account col-sm-12'>
+					<p>Already have an account? <a ng-click='toLogin()'>Log In</a>.</p>
+				</div>
+			</div>
+
+			<div class='row welcome' ng-show="welcome">
+				<div class='col-sm-10'>
+					<h4>Welcome, {{username}}.<br> Ready to play?</h4>
+				</div>
+			</div>			
+			
+		</div>
+	</div>
+</div>
+
+<a ng-click="toCanvas()">Canvas</a>

@@ -1,0 +1,60 @@
+<div class='container login-page'>
+	<div class='row'>
+		<div class='login col-sm-12'>
+			<h1>Returning Player Login</h1>
+		</div>
+
+		<div class='col-sm-12'>
+			<form ng-submit='login()' id='login-form' class="form-horizontal">
+				<div class='form-group'>
+					<label class='col-sm-2'>
+						Username:
+					</label>	
+					<div class='col-sm-4 box'>
+						<input type='text' ng-model='username' placeholder='Enter your username' minlength='4' maxlength='50' class='form-control'>
+					</div>
+				</div>	
+				<div class='row alert' ng-show="notFound">
+					<div class='col-sm-4'>
+						<h4>Sorry, we don't recognize this username. Why don't you sign up on our register page?</h4>
+					</div>
+				</div>
+				<div class='form-group'>
+					<label class='col-sm-2'>
+						Password:
+					</label>
+					<div class='col-sm-4 box'>
+						<input type='password' ng-model='password' placeholder='Enter your password' minlength='4' maxlength='50' class='form-control'>
+					</div>
+				</div>	
+				<div class='row alert' ng-show="badPass">
+					<div class='col-sm-10'>
+						<h4>Sorry, this password doesn't match the username.</h4>
+					</div>
+				</div>
+
+				<div class='row button'>
+					<div class='button-holder col-sm-12'>
+						<button type='submit' class='btn btn-success'>Log In</button>
+					</div>
+				</div>	
+			</form>
+
+			<div class='row'>	
+				<div class='new-account col-sm-12'>
+					<p>Are you new? <a ng-click='toRegister()'>Register Here</a>.</p>
+				</div>
+			</div>
+
+			<div class='row welcome' ng-show="welcome">
+				<div class='col-sm-10'>
+					<h4>Welcome back, {{username}}.<br> Thanks for visiting us again.</h4>
+				</div>
+			</div>	
+
+		</div>
+
+	</div>
+</div>	
+	
+<a ng-click="toCanvas()">Canvas</a>

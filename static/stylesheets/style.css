@@ -1,8 +1,90 @@
+@font-face {
+	font-family: 'SF Outer Limits Upright', 'Space Age';
+	src: url('SFOuterLimitsUpright.ttf', 'space-age.regular.ttf');
+
+}
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	margin: 0px;
+	padding: 0px;
+  	font-family: 'SF Outer Limits Upright', Helvetica, Arial, sans-serif;
+  	/* font-family:  'Space Age'; */
+  	font-size: 20px;
+  	background-image: url('../images/comet.jpg');
+  	background-repeat: no-repeat;
+  	background-size: cover;
+  	color: white;
+}
+
+h1{
+	font-family:  'SF Outer Limits Upright';
+	/* font-family:  'Space Age'; */
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
+}
+
+.alert{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.register, .login{
+	margin-bottom: 20px;
+}
+
+.button{
+	margin-bottom: 20px;
+}
+
+#views{
+	margin-top: 50px;
+}
+
+.teams{
+	color: black;
+}
+
+.team-score{
+	padding: 10px;
+}
+
+h3{
+	font-size: 20px;
+}
+
+.list-group li{
+	font-size: 16px;
+}
+
+.modal-content{
+	color: black;
+}
+
+.modal-body p{
+	font-size: 16px;
+}
+
+.modal-header, .game-title{
+	font-size: 20px;
+}
+
+.start-game-button{
+	text-align: center;
+}
+
+.main-display{
+	color: white;
+	text-align: center;
+}
+
+.team-list {
+	margin-top: 10%;
+}
+
+canvas {
+	text-align: center;
+	background-color: #999999;
+	margin: auto;
+	margin-top: 10%;
 }

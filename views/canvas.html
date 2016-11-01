@@ -1,4 +1,58 @@
+<div class='container-fluid canvas-page'>
+	<div class='row teams'>
+		<div class='home-team team-list hidden-xs hidden-sm col-md-2 col-lg-2 panel text-center'>
+			<div class='panel-heading'>
+				<div class="team-score hidden-xs hidden-sm col-md-12 col-lg-12">
+					Blue Score:
+				</div>
+				<h3>Blue Team Players</h3>
+			</div>
+			<div class='panel-body'>
+				<ul class='list-group' ng-repeat="user in blueTeam">
+					<li class='list-group-item'>{{user.username}}</li>
+				</ul>
+			</div>
+		</div> 
 
-<canvas id="the-canvas" height="1100px" width="1360px">
-	<!-- A canvas is an empty palatte on which to draw -->
-</canvas>	
+		<div class='main-display col-xs-12 col-sm-12 col-md-8 col-lg-8'>
+			<div class='col-xs-4 col-sm-4 hidden-md hidden-lg'>
+				Blue Team Score:
+			</div>
+			<div class='col-xs-4 col-sm-4 col-md-12'>
+			</div>
+			<div class='col-xs-4 col-sm-4 hidden-md hidden-lg'>
+				Red Team Score: 
+			</div>
+			<div class='col-sm-12'>	
+				<div id="canvas"></div>
+			</div>	
+		</div>
+
+
+		<div class='away-team team-list hidden-xs hidden-sm col-md-2 col-lg-2 panel text-center'>
+			<div class='panel-heading'>
+				<div class="team-score hidden-xs hidden-sm col-md-12 col-lg-12">
+					Red Score:
+				</div>
+				<h3>Red Team Players</h3>
+			</div>
+			<div class='panel-body'>
+				<ul class='list-group' ng-repeat="user in redTeam">
+					<li class='list-group-item'>{{user.username}}</li>
+				</ul>
+			</div>
+		</div> 
+	</div>
+
+
+
+
+</div>
+
+<!-- <script src='static/js/scripts.js'></script> -->
+<script src="static/js/player.js"></script>
+<!-- <script src="static/js/multi_test.js"></script> -->
+<script src="static/js/game.js"></script>
+<script src="static/js/game_over.js"></script>
+<script src='static/js/wait.js'></script>
+<script src="static/js/main_game.js"></script>
