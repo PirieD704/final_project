@@ -90,6 +90,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 
 	socket.on('replay_init', function(data){
 		game.state.start('Game');
+		console.log('replaying')
 	})
 
 	// registration page 

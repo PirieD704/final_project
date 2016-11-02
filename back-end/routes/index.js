@@ -149,14 +149,8 @@ io.sockets.on('connect',function(socket){
 	})
 	socket.on('player_ready', function(data){
 		//I want this to keep track of how many players are ready to play.
-		if(game_players.length == 0){
-			game_players.push(data.id);
-			console.log(game_players.length + ' ready, ' + lobby_users + ' playing');
-		}else if(game_players.length < lobby_users){
-			if(game_players.indexOf(data.id) == -1){
-				game_players.push(data.id);
-			}
-		}else{
+		game_players.push(data.id);
+		if(game_players.length == lobby_users){
 			io.sockets.emit('replay_init', users);
 			flagCoordinates();
 		}
