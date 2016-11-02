@@ -117,7 +117,7 @@ io.sockets.on('connect',function(socket){
 			console.log("users are ready");
 			io.sockets.emit('game_launch', users);
 				console.log('game launching');
-			flagCoordinates();
+			// flagCoordinates();
 		}else{
 			io.sockets.emit('player_ready', data.num_ready);
 				console.log('no launch yet');	
@@ -139,7 +139,7 @@ io.sockets.on('connect',function(socket){
 		})
 	})
 	socket.on('get_coord', function(data){
-		flagCoordinates();
+		flagCoordinates(data);
 	})
 	socket.on('flag_changed', function(data){
 		new_color = data.flag_color;
@@ -152,7 +152,7 @@ io.sockets.on('connect',function(socket){
 		game_players.push(data.id);
 		if(game_players.length == lobby_users){
 			io.sockets.emit('replay_init', users);
-			flagCoordinates();
+			flagCoordinates(data);
 		}
 
 
@@ -182,12 +182,12 @@ io.sockets.on('connect',function(socket){
 		io.sockets.emit('users', users);
 	})
 });	
-function flagCoordinates(){
-	flag_x = Math.floor(Math.random() * 1960 + 10);
-	flag_y = Math.floor(Math.random() * 1960 + 10);
+function flagCoordinates(data){
+	// flag_x = Math.floor(Math.random() * 1960 + 10);
+	// flag_y = Math.floor(Math.random() * 1960 + 10);
 	io.sockets.emit('flag_coord', {
-		flag_x:flag_x,
-		flag_y:flag_y
+		flag_x:data.flag_x,
+		flag_y:data.flag_y
 	});
 }
 

@@ -1,7 +1,7 @@
 var sprite, flag, playerList, flagGroup, player, cursors, fireButton, flareButton, boost, land, timer, timerEvent, winner;
 var redTotal, blueTotal = 0;
 
-var flag_x, flag_y = 800;
+var flag_x, flag_y;
 
 var x;
 
@@ -187,8 +187,7 @@ var Game = {
             flag_x: flag_x,
             flag_y: flag_x
         })
-        console.log('new coords for flag')
-      }  
+        console.log('new coords for flag')  
     },
     ping: function(){
         // console.log("This is the player.object: " + player.player);

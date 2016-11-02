@@ -50,6 +50,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	socket.on('player_ready', function(data){
 		console.log(data);
 		num_ready = data;
+
 	})
 	
 	socket.on('game_launch', function(users){	
@@ -58,9 +59,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	})
 
 	socket.on('flag_coord', function(data){
-		flag.x = data.flag_x;
-		flag.y = data.flag_y;
-		flag.body.reset(data.flag_x, data.flag_y, 80);
+		flag.position.x = data.flag_x;
+		flag.position.y = data.flag_y;
+		// flag.body.reset(data.flag_x, data.flag_y, 80);
 	});
 	socket.on('flag_color', function(data){
 		flag.loadTexture(data.new_color);
