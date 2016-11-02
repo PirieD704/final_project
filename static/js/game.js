@@ -44,17 +44,14 @@ var Game = {
         //  It won't start automatically, allowing you to hook it to button events and the like.
         timer.start();
 
-        flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
+        flag = this.game.add.sprite(1000, 1000, 'flag');
         flag.scale.setTo(0.35, 0.35);
-        this.game.time.events.loop(3100, function() {  
-            this.game.add.tween(flag).to({
-                x: flag_x, 
-                y: flag_y}, 
-                3000, 
-                Phaser.Easing.Quadratic.InOut, 
-                true);
-        }, 
-            this)
+        flag.anchor.set(0.5, 0.5);
+        game.physics.p2.enable(flag);
+        flag.body.mass = 4;
+        flag.body.inertia = 4;
+        flag.body.setCircle(33);
+
         console.log(playerList);
         for (i in playerList){
             playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
@@ -87,19 +84,34 @@ var Game = {
         flareButton = this.input.keyboard.addKey(Phaser.KeyCode.F);
         boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
-        sprite.anchor.set(0.5, 0.5);
-        // shield.anchor.set(0.5);
-        flagGroup = game.add.group();
-        flagGroup.enableBody = true;
-        flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
-
-        // add flag to flag group
-        flagGroup.add(flag);
-
         game.world.setBounds(0, 0, 2000, 2000);
         game.physics.startSystem(Phaser.Physics.P2JS);
+
+        var spriteMaterial = game.pysics.p2.createMaterial('spriteMaterial', flag.body);
+        var spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', flag.body)
+
+        // sets the physics of the borders
+        var worldMaterial = game.physics.p2.createMaterial('worldMaterial');
+        game.physics.p2.setWorldMaterial(worldMaterial, true, true, true, true);
         
+
+        var contactMaterial = game.physics.p2.createContactMaterial(spriteMaterial, worldMaterial);
+
+        contactMaterial.restitution = 1.0;
+
         cursors = game.input.keyboard.createCursorKeys();
+        // sprite.anchor.set(0.5, 0.5);
+        // shield.anchor.set(0.5);
+        // flagGroup = game.add.group();
+        // flagGroup.enableBody = true;
+        // flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
+        // add flag to flag group
+        // flagGroup.add(flag);
+
+        
+        
+        // cursors = game.input.keyboard.createCursorKeys();
 
         // other_cursors = game.input.keyboard.createCursorKeys();
 

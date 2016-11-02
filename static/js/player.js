@@ -48,6 +48,10 @@ Player = function (game, team, position, flag, game_id, id) {
     game.physics.p2.enable(this.player);
     this.player_id = game_id;
     this.unique_id = id;
+    this.player.body.setCircle(33);
+    this.player.body.mass = 10;
+    this.player.body.inertia = 10;
+    
     this.flare = game.add.weapon(10, 'flare');
     this.flare.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     this.flare.bulletLifespan = 1000;
