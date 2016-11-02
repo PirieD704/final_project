@@ -162,7 +162,15 @@ var Game = {
         for(i in playersPresent){
             if(this.checkOverlap(weapon.bullets, playersPresent[i].player)){
                 if(player.team_flag !== playersPresent[i].team_flag){
-                    console.log('hit enemy');
+                    console.log(playersPresent[i]);
+                    console.log(weapon.bullets);
+                    weapon.kill();
+                    playersPresent[i].health - 1;
+                    console.log(playersPresent[i]);
+                    if (playersPresent[i].health <= 0){
+                        playersPresent[i].reset((Math.random() * 2000),(Math.random() * 2000));
+                        playersPresent[i].health = 5;
+                    }
                 }
             }
         }
