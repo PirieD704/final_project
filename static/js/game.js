@@ -87,7 +87,7 @@ var Game = {
         game.world.setBounds(0, 0, 2000, 2000);
         game.physics.startSystem(Phaser.Physics.P2JS);
 
-        var spriteMaterial = game.pysics.p2.createMaterial('spriteMaterial', flag.body);
+        var spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', flag.body);
         var spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', flag.body)
 
         // sets the physics of the borders
