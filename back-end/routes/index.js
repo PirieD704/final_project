@@ -192,5 +192,5 @@ function flagCoordinates(){
 }
 
 module.exports = router;
-server.listen(8080);
+server.listen(8050);
 console.log('listening on port 8080');
