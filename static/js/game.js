@@ -192,11 +192,14 @@ var Game = {
             game.debug.text(this.formatTime(Math.round((timerEvent.delay - timer.ms) / 1000)), 2, 14, "#ff0");
         }
         else {
-            if(flag.texture == 'red_flag'){
+            if(flag.key == 'red_flag'){
                 winner = 'Red Team!';
                 game.state.start('Game_Over');
-            }else{
+            }else if(flag.key == 'blue_flag'){
                 winner = 'Blue Team!';
+                game.state.start('Game_Over');
+            }else{
+                winner = 'No One!';
                 game.state.start('Game_Over');
             }
         }

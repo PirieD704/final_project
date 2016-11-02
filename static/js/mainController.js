@@ -125,6 +125,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$timeout(function(){
 						updateLobbyCount();
 						$location.path('/lobby');
+						console.log('entering lobby');
 					}, 1500);
 					setTimeout(tutorialModal, 1600);
 				}
