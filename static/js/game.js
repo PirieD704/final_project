@@ -1,7 +1,7 @@
 var sprite, flag, playerList, flagGroup, player, cursors, fireButton, flareButton, boost, land, timer, timerEvent, winner;
 var redTotal, blueTotal = 0;
 
-var flag_x, flag_y = 800;
+var flag_x, flag_y;
 
 var x;
 
@@ -42,19 +42,35 @@ var Game = {
         timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 30, this.endTimer, this);
 
         //  It won't start automatically, allowing you to hook it to button events and the like.
-        timer.start();
+        timer.start(); 
 
-        flag = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'flag');
+        flag = this.game.add.sprite(1000, 1000, 'flag');
         flag.scale.setTo(0.35, 0.35);
-        this.game.time.events.loop(3100, function() {  
-            this.game.add.tween(flag).to({
-                x: flag_x, 
-                y: flag_y}, 
-                3000, 
-                Phaser.Easing.Quadratic.InOut, 
-                true);
-        }, 
-            this)
+        flag.anchor.set(0.5, 0.5);
+        // shield.anchor.set(0.5);
+        game.physics.p2.enable(flag);
+        flag.body.mass = 4;
+        flag.body.inertia = 4;
+        // flag.body.restitution = 2.0;
+        flag.body.setCircle(33);
+        console.log("the flag: ")
+        console.log(flag);
+        // flagGroup = game.add.group();
+        // flag.enableBody = true;
+        // flagGroup.physicsBodyType = Phaser.Physics.p2;
+
+        // add flag to flag group
+        // flagGroup.add(flag);
+
+                // this.game.time.events.loop(3100, function() {  
+        //     this.game.add.tween(flag).to({
+        //         x: flag_x, 
+        //         y: flag_y}, 
+        //         3000, 
+        //         Phaser.Easing.Quadratic.InOut, 
+        //         true);
+        // }, 
+        //     this)
         console.log(playerList);
         for (i in playerList){
             playersPresent[i] = new Player(game, playerList[i].team, i, flag, i, playerList[i].socketID);
@@ -87,18 +103,23 @@ var Game = {
         flareButton = this.input.keyboard.addKey(Phaser.KeyCode.F);
         boost = this.input.keyboard.addKey(Phaser.KeyCode.SHIFT);
 
-        sprite.anchor.set(0.5, 0.5);
-        // shield.anchor.set(0.5);
-        flagGroup = game.add.group();
-        flagGroup.enableBody = true;
-        flagGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-        // add flag to flag group
-        flagGroup.add(flag);
 
         game.world.setBounds(0, 0, 2000, 2000);
         game.physics.startSystem(Phaser.Physics.P2JS);
+
+        // set physics variable for flag
+        var spriteMaterial = game.physics.p2.createMaterial('spriteMaterial', flag.body)
+
+        // sets the physics of the borders
+        var worldMaterial = game.physics.p2.createMaterial('worldMaterial');
+        game.physics.p2.setWorldMaterial(worldMaterial, true, true, true, true);
         
+
+        var contactMaterial = game.physics.p2.createContactMaterial(spriteMaterial, worldMaterial);
+
+        contactMaterial.restitution = 1.0;
+
         cursors = game.input.keyboard.createCursorKeys();
 
         // other_cursors = game.input.keyboard.createCursorKeys();
@@ -114,7 +135,7 @@ var Game = {
         this.updateMe();
         this.updateFlag();
         this.flagPossession();
-        this.blasterHit();
+        // this.blasterHit();
         this.ping();
     },
     updateLand: function() {
@@ -129,7 +150,6 @@ var Game = {
             player.input.down = cursors.down.isDown;
             player.input.left = cursors.left.isDown;
             player.input.right = cursors.right.isDown;
-            // player.input.laser = fireButton.isDown;
             player.input.flare = flareButton.isDown;
             player.input.blaster = fireButton.isDown;
             player.input.boost = boost.isDown;
@@ -158,32 +178,56 @@ var Game = {
             }
         }
     },
-    blasterHit: function(){
-        for(i in playersPresent){
-            if(this.checkOverlap(weapon.bullets, playersPresent[i].player)){
-                if(player.team_flag !== playersPresent[i].team_flag){
-                    console.log(playersPresent[i]);
-                    console.log(weapon.bullets);
-                    weapon.kill();
-                    playersPresent[i].health - 1;
-                    console.log(playersPresent[i]);
-                    if (playersPresent[i].health <= 0){
-                        playersPresent[i].reset((Math.random() * 2000),(Math.random() * 2000));
-                        playersPresent[i].health = 5;
-                    }
-                }
-            }
-        }
+    // blasterHit: function(){
+    //     console.log('weapon.bullets: ')
+    //     console.log(weapon.bullets.children[0]);
+    //     for(i in weapon.bullets.children){
+    //         for(i in playersPresent){
+    //             if(this.checkOverlap(weapon.bullets.children[i], playersPresent[i].player)){
+    //                 if(player.team_flag !== playersPresent[i].team_flag){
+    //                     console.log(playersPresent[i]);
 
-    },
+    //                     weapon.kill();
+    //                     playersPresent[i].health - 1;
+    //                     console.log(playersPresent[i]);
+    //                     if (playersPresent[i].health <= 0){
+    //                         playersPresent[i].reset((Math.random() * 2000),(Math.random() * 2000));
+    //                         playersPresent[i].health = 5;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // },
     updateFlag: function(){
-      if((flag.x == flag_x) && (flag.y == flag_y)){
-        socket.emit('get_coord', {
-            flag_x: flag_x,
-            flag_y: flag_x
-        })
-        console.log('new coords for flag')
-      }  
+        // console.log(flag)
+        if(flag.x <= 50 && (flag.y <= 1900 && flag.y >= 100)){
+            flag_x = 1000;
+            flag_y = 1000;
+            (console.log('blue team scores!'));
+            socket.emit('flag_coord', {
+                flag_x:flag_x,
+                flag_y:flag_y,
+            });
+        }else if(flag.y >= 1950 && (flag.x <= 1900 && flag.x >= 100)){
+            flag_x = 1000;
+            flag_y = 1000;
+            console.log('red Team scores!')
+            socket.emit('flag_coord', {
+                flag_x:flag_x,
+                flag_y:flag_y,
+            }); 
+        }else{
+        // console.log("some stuff");
+            socket.emit('get_coord', {
+                flag_x: flag.x,
+                flag_y: flag.y,
+            })
+        }
+        if((flag.x == flag_x) && (flag.y == flag_y)){
+
+            console.log('new coords for flag')
+        }  
     },
     ping: function(){
         // console.log("This is the player.object: " + player.player);

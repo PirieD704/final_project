@@ -1,9 +1,9 @@
 Game.prototype = {
 	create: function(){
-		var bulletsCollisionGroup = game.physics.p2.createCollisionGroup();
-		var redTeamCollisionGroup = game.physics.p2.createCollisionGroup();
-		var blueTeamCollisionGroup = game.physics.p2.createCollisionGroup();
-		var wallCollisionGroup = game.physics.p2.createCollisionGroup();
+		var bulletsCollisionGroup = game.add.group();
+		var redTeamCollisionGroup = game.add.group();
+		var blueTeamCollisionGroup = game.add.group();
+		var wallCollisionGroup = game.add.group();
 
 		this.bullets = game.add.group();
 		this.bullets.enableBody = true;

@@ -139,7 +139,7 @@ io.sockets.on('connect',function(socket){
 		})
 	})
 	socket.on('get_coord', function(data){
-		flagCoordinates();
+		flagCoordinates(data);
 	})
 	socket.on('flag_changed', function(data){
 		new_color = data.flag_color;
@@ -158,7 +158,7 @@ io.sockets.on('connect',function(socket){
 			}
 		}else{
 			io.sockets.emit('replay_init', users);
-			flagCoordinates();
+			flagCoordinates(data);
 		}
 
 
@@ -188,13 +188,15 @@ io.sockets.on('connect',function(socket){
 		io.sockets.emit('users', users);
 	})
 });	
-function flagCoordinates(){
-	flag_x = Math.floor(Math.random() * 1960 + 10);
-	flag_y = Math.floor(Math.random() * 1960 + 10);
+function flagCoordinates(data){
+	flag_x = data.flag_x;
+	flag_y = data.flag_y;
+	// checks if goal is scored
+	console.log(data);
 	io.sockets.emit('flag_coord', {
 		flag_x:flag_x,
-		flag_y:flag_y
-	});
+		flag_y:flag_y,
+	});	
 }
 
 module.exports = router;

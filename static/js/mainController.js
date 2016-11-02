@@ -5,6 +5,8 @@ var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 	var num_ready = 0;
 	var apiPath = 'http://localhost:3030';
+	var redScore = 0;
+	var blueScore = 0;
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);
@@ -60,6 +62,14 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	socket.on('flag_coord', function(data){
 		flag_x = data.flag_x;
 		flag_y = data.flag_y;
+		flag.body.reset(flag_x, flag_y, 80)
+		if (blue_score){
+			blueScore++;
+			console.log('Team Blue score: ' + blueScore)
+		}else if (red_score){
+			redScore++;
+			console.log('Team Red score: ' + redScore)
+		}
 	});
 	socket.on('flag_color', function(data){
 		flag.loadTexture(data.new_color);

@@ -31,6 +31,9 @@ Player = function (game, team, position, flag, game_id, id) {
         boost: false
     }
 
+    // var bulletsGroup = game.add.group();
+
+
     this.alive = true;
     this.game = game;
     if(team === 'Blue'){
@@ -48,9 +51,12 @@ Player = function (game, team, position, flag, game_id, id) {
     game.physics.p2.enable(this.player);
     this.player_id = game_id;
     this.unique_id = id;
-    this.lifespan = 5;
-    this.maxHealth = 5;
-    this.health = 5;
+    this.player.body.setCircle(33);
+    this.player.body.mass = 10;
+    this.player.body.inertia = 10;
+    // this.player.restitution = 2.0;
+    console.log('restit-palyer: ');
+    console.log(this.player.restitution);
     this.flare = game.add.weapon(10, 'flare');
     this.flare.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
     this.flare.bulletLifespan = 1000;
@@ -59,6 +65,7 @@ Player = function (game, team, position, flag, game_id, id) {
     this.flare.trackSprite(this.player, 0, 0, true);
     //This will be the main weapon
     this.blaster = game.add.weapon(30, 'particle');
+    console.log(this.blaster.bullets)
     this.blaster.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
     this.blaster.bulletSpeed = 900;
     this.blaster.fireRate = 80;
@@ -67,9 +74,6 @@ Player = function (game, team, position, flag, game_id, id) {
     console.log(this.player);
     this.boost = 0;
     this.boostTurn = 0;
-
-
-
 };
 Player.prototype.update = function(who) {
     //it's me
@@ -121,7 +125,7 @@ Player.prototype.update = function(who) {
 
             if(this.player.position.x !== undefined){
 
-                this.player.body.reset(this.player.position.x, this.player.position.y, 100);
+                this.player.body.reset(this.player.position.x, this.player.position.y, 80);
                 this.player.body.rotation = this.player.rotation;
             }
         }            
