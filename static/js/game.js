@@ -181,7 +181,8 @@ var Game = {
 
     },
     updateFlag: function(){
-      if((flag.x == flag_x) && (flag.y == flag_y)){
+      flag_x = flag.x;
+      flag_y = flag.y;
         socket.emit('get_coord', {
             flag_x: flag_x,
             flag_y: flag_x

@@ -58,8 +58,9 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 	})
 
 	socket.on('flag_coord', function(data){
-		flag_x = data.flag_x;
-		flag_y = data.flag_y;
+		flag.x = data.flag_x;
+		flag.y = data.flag_y;
+		flag.body.reset(data.flag_x, data.flag_y, 80);
 	});
 	socket.on('flag_color', function(data){
 		flag.loadTexture(data.new_color);
