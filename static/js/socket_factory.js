@@ -1,7 +1,7 @@
 var socket;
 var gameApp = angular.module("gameApp", ['ngRoute', 'ngCookies']);
 gameApp.factory('socket', function ($rootScope) {
-  socket = io.connect('http://localhost:8080');
+  socket = io.connect('http://localhost:8050');
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {  

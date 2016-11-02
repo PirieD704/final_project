@@ -90,7 +90,6 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 
 	socket.on('replay_init', function(data){
 		game.state.start('Game');
-		console.log('replaying')
 	})
 
 	// registration page 
@@ -126,6 +125,7 @@ gameApp.controller('mainController', function($scope, $http, $cookies, $route, $
 					$timeout(function(){
 						updateLobbyCount();
 						$location.path('/lobby');
+						console.log('entering lobby');
 					}, 1500);
 					setTimeout(tutorialModal, 1600);
 				}
