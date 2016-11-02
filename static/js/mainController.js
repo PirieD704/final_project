@@ -4,7 +4,7 @@ playerList = [];
 var myId = 0;
 gameApp.controller('mainController', function($scope, $http, $cookies, $route, $location, $rootScope, $timeout, socket){
 	var num_ready = 0;
-	var apiPath = 'http://localhost:3000';
+	var apiPath = 'http://localhost:3030';
 
 	socket.on('player_init', function(socket_id){
 		console.log("Welcome, fool", socket_id);

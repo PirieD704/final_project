@@ -6,4 +6,7 @@ game.state.add('Game', Game);
 
 game.state.start('Game');
 
+game.state.add('Wait', Wait);
+
 game.state.add('Game_Over', Game_Over);
+

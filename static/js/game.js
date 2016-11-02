@@ -184,8 +184,11 @@ var Game = {
             if(flag.key == 'red_flag'){
                 winner = 'Red Team!';
                 game.state.start('Game_Over');
-            }else{
+            }else if(flag.key == 'blue_flag'){
                 winner = 'Blue Team!';
+                game.state.start('Game_Over');
+            }else{
+                winner = 'No One!';
                 game.state.start('Game_Over');
             }
         }
