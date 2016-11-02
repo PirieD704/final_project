@@ -117,6 +117,9 @@ Red player with flag it changed to red
 Waiting screen if there are no other players ready to play
 ![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/waiting-screen.png 'waiting-screen.png')
 
+Wining screen when the timer runs out
+![alt text](https://github.com/PirieD704/final_project/blob/master/screenshots/winning-screen.png 'winning-screen.png')
+
 ##Code Examples
 ---
 This is the player constructor function we use for creating each new player on the canvas game board. It determines which color to make the player based on their team assignment (which happens when they enter the lobby), and sets up all the other things player objects can do like boosting their speed, sending out a flare to locate the flag, etc.
