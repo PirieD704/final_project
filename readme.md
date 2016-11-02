@@ -23,7 +23,7 @@ This is a final project, capture the flag-style game we made as a group utilizin
 
 We built a multiplayer game where players try to find the 'flag' moving around the game board, change it to their color and defend it from players on the opposing team for a set amount of time to win the round and earn bragging rights.
 
-The game is built on the MEAN stack (MongoDB, Angular, Express and NodeJS) with the Phaser.io game engine driving the HTML5 canvas and Socket.io making multiplayer gaming possible.
+The game is built on the MEAN stack (MongoDB, Angular, Express and Node.js) with the Phaser game engine driving the HTML5 canvas and Socket.io making multiplayer gaming possible.
 
 ##What We Used
 ---
@@ -33,7 +33,9 @@ The game is built on the MEAN stack (MongoDB, Angular, Express and NodeJS) with 
   * AngularJS
   * Nodejs
   * Express
-  * Sockets.io
+  * MongoDB
+  * Mongoose
+  * Socket.io
   * Phaser (HTML5 game framework)
   * bcrypt (password hashing module)
 
