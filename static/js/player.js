@@ -122,7 +122,7 @@ Player.prototype.update = function(who) {
 
             if(this.player.position.x !== undefined){
 
-                this.player.body.reset(this.player.position.x, this.player.position.y, 100);
+                this.player.body.reset(this.player.position.x, this.player.position.y, 60);
                 this.player.body.rotation = this.player.rotation;
             }
         }            

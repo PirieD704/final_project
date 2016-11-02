@@ -126,7 +126,7 @@ var Game = {
         this.updateMe();
         this.updateFlag();
         this.flagPossession();
-        this.blasterHit();
+        // this.blasterHit();
         this.ping();
     },
     updateLand: function() {
@@ -170,16 +170,16 @@ var Game = {
             }
         }
     },
-    blasterHit: function(){
-        for(i in playersPresent){
-            if(this.checkOverlap(weapon.bullets, playersPresent[i].player)){
-                if(player.team_flag !== playersPresent[i].team_flag){
-                    console.log('hit enemy');
-                }
-            }
-        }
+    // blasterHit: function(){
+    //     for(i in playersPresent){
+    //         if(this.checkOverlap(weapon.bullets, playersPresent[i].player)){
+    //             if(player.team_flag !== playersPresent[i].team_flag){
+    //                 console.log('hit enemy');
+    //             }
+    //         }
+    //     }
 
-    },
+    // },
     updateFlag: function(){
       flag_x = flag.x;
       flag_y = flag.y;
