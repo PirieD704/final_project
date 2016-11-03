@@ -5,6 +5,10 @@
 ---
 [Space Balls](http://paigeniedringhaus.com/spaceBalls/)
 
+##Link to Video of Gameplay
+---
+<a href="https://www.youtube.com/watch?v=_gJCeyrkUkM" target="_blank"><img src="http://img.youtube.com/vi/_gJCeyrkUkM/0.jpg" width="240" height="180" border="10" /></a>
+
 ##Contents
 --- 
   * What It Is
