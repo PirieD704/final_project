@@ -3,7 +3,7 @@
 
 ##Live Demo
 ---
-[Space Balls](http://paigeniedringhaus.com/spaceBalls/)
+//[Space Balls](http://paigeniedringhaus.com/spaceBalls/)
 
 ##Link to Video of Gameplay
 ---
